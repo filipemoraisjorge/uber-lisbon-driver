@@ -86,11 +86,14 @@ abstract public class Car {
     }
 
 
-    public void move() throws InterruptedException {
+    public void move() {
+
         if (!isCrashed() /*&& !checkBumper()*/) {
             // if not bumping into something, then move
 
             representation.move(speed, steerAngle, gearShift);
+
+
         }
 
     }

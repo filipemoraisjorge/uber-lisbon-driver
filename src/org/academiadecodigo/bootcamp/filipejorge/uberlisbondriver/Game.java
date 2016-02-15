@@ -11,7 +11,7 @@ import org.academiadecodigo.simplegraphics.mouse.MouseHandler;
 
 public class Game {
 
-    public static final int MANUFACTURED_CARS = 1;
+    public static final int MANUFACTURED_CARS = 10;
 
     public static final int MAXIMUM_CAR_SPEED = CarType.getAllMaxSpeed();
 
@@ -66,7 +66,7 @@ public class Game {
         while (true) {
 
             // Pause for a while
-            Thread.sleep(delay);
+            //Thread.sleep(delay);
 
             // Move all cars
             for (int i = 0; i < drivers.length; i++) {

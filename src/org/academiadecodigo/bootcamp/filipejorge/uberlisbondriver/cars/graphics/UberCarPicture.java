@@ -6,10 +6,10 @@ import org.academiadecodigo.simplegraphics.pictures.Picture;
  * Created by filipejorge on 15/02/16.
  */
 public enum UberCarPicture {
-    UBERX("uber-car-x.png"),
-    UBERSPACE("uber-car-space.png"),
-    UBERBLACK("uber-car-black.png"),
-    TAXI("uber-car-taxi.png");
+    UBERX("resources/uber-car-x.png"),
+    UBERSPACE("resources/uber-car-space.png"),
+    UBERBLACK("resources/uber-car-black.png"),
+    TAXI("resources/uber-car-taxi.png");
 
     private String file;
     private Picture picture;

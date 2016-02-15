@@ -39,21 +39,23 @@ public class Driver {
     }
 
     //basic operations, with car.move()(refresh animation) in it
-    public void accelerate() throws InterruptedException {
+    public void accelerate() {
         while (car.getSpeed() < car.getMaxSpeed()) {
             car.acceleratePedal();
         }
+
         car.move();
     }
 
-    public void stop() throws InterruptedException {
+    public void stop() {
         while (car.getSpeed() > 0) {
             car.brakePedal();
         }
+
         car.move();
     }
 
-    public void steerLeft() throws InterruptedException {
+    public void steerLeft() {
         while (Math.abs(car.getSteerAngle()) < car.getMAXSTEERINGANGLE()) {
             car.steeringWheel(SteerDirection.LEFT);
         }
@@ -135,11 +137,12 @@ public class Driver {
     }
 
     public void reversing() throws InterruptedException {
-        stop();
+        //stop();
         //calc the angle to wall. Need it to decide which side should I steeringWheel to.
         float wallAngle = car.getRepresentation().getVector().getDir().getAngle() % 360; //HORRIVEL!
         //inverse steeringWheel to max
         car.setSteerAngle(((wallAngle % 90) <= 45 ? -car.getMAXSTEERINGANGLE() : car.getMAXSTEERINGANGLE()));
+        //moveBackwards(10);
         while (/*!car.checkBumper()*/ !car.getRepresentation().getVector().isOutsideField()) { //TODO: another way? only works when on the edge
             moveBackwards();
         }

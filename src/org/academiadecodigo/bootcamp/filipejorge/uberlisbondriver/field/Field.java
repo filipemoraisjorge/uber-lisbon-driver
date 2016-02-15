@@ -30,21 +30,21 @@ public final class Field {
         Vector.validBoundaries(MARGIN_LEFT + 1, MARGIN_TOP + 1, Field.width - 1 - MARGIN_LEFT, Field.height - 1 - MARGIN_TOP);
 
         //Draw a border.
-        Rectangle fieldBorder = new Rectangle(MARGIN_LEFT, MARGIN_TOP, Field.width - 1 - MARGIN_LEFT, Field.height - 1 - MARGIN_TOP);
-        Rectangle fieldBack = new Rectangle(MARGIN_LEFT, MARGIN_TOP, Field.width - 1 - MARGIN_LEFT, Field.height - 1 - MARGIN_TOP);
+        Rectangle fieldBorder = new Rectangle(MARGIN_LEFT, MARGIN_TOP, width, height);
+        Rectangle fieldBack = new Rectangle(MARGIN_LEFT, MARGIN_TOP, width, height);
         fieldBorder.setColor(new Color(200, 200, 200));
         fieldBorder.fill();
         fieldBack.setColor(ColorUber.BLUE.getColor());
         fieldBack.draw();
 
-        Picture cityBackground1 = new Picture(MARGIN_LEFT + 1, MARGIN_TOP + 1, "uber-city_background1.png");
-        Picture cityBackground2 = new Picture(MARGIN_LEFT + 1, MARGIN_TOP + 1 + cityBackground1.getHeight() - 1, "uber-city_background2.png");
+        //Picture cityBackground1 = new Picture(MARGIN_LEFT + 1, MARGIN_TOP + 1, "resources/uber-city_background1.png");
+        //Picture cityBackground2 = new Picture(MARGIN_LEFT + 1, MARGIN_TOP + 1 + cityBackground1.getHeight() - 1, "resources/uber-city_background2.png");
 
-        cityBackground1.draw();
-        cityBackground2.draw();
+        //cityBackground1.draw();
+        //cityBackground2.draw();
 
-        Picture citySkyLine = new Picture(MARGIN_LEFT + 1, MARGIN_TOP + height + 10, "uber-skyline.png");
-        citySkyLine.draw();
+        //Picture citySkyLine = new Picture(MARGIN_LEFT + 1, MARGIN_TOP + height + 10, "resources/uber-skyline.png");
+        //citySkyLine.draw();
 
     }
 

@@ -30,18 +30,19 @@ public class Representation {
 
 
         //temp picture to get width and height. It's a sign that something is no well structured...
-        this.picture = UberCarPicture.valueOf(car.getCarType().toString()).getPicture(0, 0);
+        // this.picture = UberCarPicture.valueOf(car.getCarType().toString()).getPicture(0, 0);
 
 
-        this.width = this.picture.getWidth();
-        this.height = this.picture.getHeight(); //TODO:check new size, not working properly.
-        this.vector = new Vector(width, height);
-        this.picture = UberCarPicture.valueOf(car.getCarType().toString()).getPicture(this.vector.getPos().getX(), this.vector.getPos().getY());
-        this.picture.draw();
+        // this.width = this.picture.getWidth();
+        // this.height = this.picture.getHeight(); //TODO:check new size, not working properly.
+
+        this.vector = new Vector();
+        //this.picture = UberCarPicture.valueOf(car.getCarType().toString()).getPicture(this.vector.getPos().getX(), this.vector.getPos().getY());
+        //this.picture.draw();
         //create vector
         //this.vector = new Vector(width, height);
-        //this.width =20;
-        //this.height=20;
+        this.width = 20;
+        this.height = 20;
 
         this.color = car.getCarType().getColor();
         //this.color = new Color((int) (Math.random() * 255), (int) (Math.random() * 255), (int) (Math.random() * 255));
@@ -49,7 +50,7 @@ public class Representation {
 
         this.rectangle = new Rectangle(this.vector.getPos().getX(), this.vector.getPos().getY(), width, height);
         this.rectangle.setColor(this.color);
-        this.rectangle.draw();
+        this.rectangle.fill();
 
         float xCenter = this.vector.getPos().getX() + (width / 2);
         float yCenter = this.vector.getPos().getY() + (height / 2);
@@ -92,7 +93,7 @@ public class Representation {
     }
 
     public void setCrashed() {
-        this.picture.setColorAt(10, 10, this.color);
+        //this.picture.setColorAt(10, 10, this.color);
         this.color = new Color(this.color.getRed() / 2, this.color.getGreen() / 2, this.color.getBlue() / 2);
         this.rectangle.setColor(this.color);
         this.rectangle.draw();
@@ -102,16 +103,24 @@ public class Representation {
         return vector.isOnEdge();
     }
 
-    public void move(int speed, float angle, int shift) throws InterruptedException {
+    public void move(int speed, float angle, int shift) {
+        if (isOnEdge() || vector.isOutsideField()) {
+            if (vector.isTurnToMove(speed)) { //TODO: speed not working!
 
-        if (vector.isTurnToMove(speed)) { //TODO: speed not working!
-            vector.move(speed, angle, shift);
-            this.draw();
+
+                vector.move(speed, 0, shift); //TODO: é aqui que pode resolver o voltar para tras
+                this.draw();
+            }
+        } else {
+            if (vector.isTurnToMove(speed)) { //TODO: speed not working!
+                vector.move(speed, angle, shift);
+                this.draw();
+            }
         }
     }
 
 
-    public void draw() throws InterruptedException {
+    public void draw() {
 
         //draw shape
         Position lastPos = this.vector.getLastPos();
@@ -126,13 +135,17 @@ public class Representation {
         this.circleDir.fill();
         this.rectangle.setColor(this.color);
         this.rectangle.translate(xRelative, yRelative);
-        this.picture.translate(xRelative, yRelative);
+        //this.picture.translate(xRelative, yRelative);
         //this.infoText.setColor(Color.BLACK);
         //this.infoText.translate(xRelative, yRelative);
         //this.infoText.draw();
 
 
-        Thread.sleep(Game.delay);
+        try {
+            Thread.sleep(Game.delay);
+        } catch (InterruptedException ex) {
+            // do nothing...
+        }
     }
 
     private void adjustDirLine() {

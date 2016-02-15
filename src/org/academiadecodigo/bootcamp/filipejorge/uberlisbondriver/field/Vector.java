@@ -27,9 +27,11 @@ public class Vector {
     private Position lastPos;
     private float turnAccumulator;
 
-    public Vector(int width, int height) {
+    public Vector() {
 
-        Vector.validBoundaries(xBoundMin, yBoundMin, xBoundMax - (width), yBoundMax - (height));
+        Vector.validBoundaries(xBoundMin, yBoundMin, xBoundMax, yBoundMax);
+        //Vector.validBoundaries(xBoundMin, yBoundMin, xBoundMax - (width), yBoundMax - (height));
+
 
         this.pos = new Position(xBoundMin, yBoundMin, xBoundMax, yBoundMax);
         this.dir = new Direction();
@@ -93,7 +95,7 @@ public class Vector {
 
         dir.rotateDir(steerAngle);
 
-        //if (!isOnEdge()) {
+
         //move pos towards dir
         pos.setPos(pos.getX() + (shift * dir.getxDir()), pos.getY() + (shift * dir.getyDir()));
         //}

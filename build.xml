@@ -1,15 +1,17 @@
 <?xml version="1.0" ?>
-<project name="CarCrash" default="jarfile">
+<project name="UberLisbonDriver" default="jarfile">
 
     <!-- Initialize build properties  -->
     <target name="init" description="Initializes properties">
-        <property name="project.name" value="CarCrash"/>
+        <property name="project.name" value="UberLisbonDriver"/>
         <property name="src.dir" value="src"/>
         <property name="main.class"
-                  value="org.academiadecodigo.carcrash.org.academiadecodigo.filipejorge.sniperriflegraphics.Main"/>
+                  value="org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.Main"/>
         <property name="build.dir" value="build"/>
         <property name="classes.dir" value="${build.dir}/classes"/>
+        <property name="resource.dir" value="resources"/>
         <property name="lib.dir" value="lib"/>
+
         <path id="classpath">
             <fileset dir="${lib.dir}" includes="**/*.jar"/>
         </path>
@@ -36,11 +38,14 @@
     <target name="jarfile" description="Archives the code" depends="compile">
         <jar destfile="${build.dir}/${project.name}.jar" basedir="${classes.dir}">
             <manifest>
-                <attribute name="org.academiadecodigo.filipejorge.sniperriflegraphics.Main-Class"
+                <attribute name="Main-Class"
                            value="${main.class}"/>
-                <attribute name="Class-Path" value="${lib.dir}"/>
+                <attribute name="Class-Path" value="${lib.dir} ${resource.dir}"/>
             </manifest>
             <zipgroupfileset dir="${lib.dir}" includes="*.jar"/>
+            <fileset dir=".">
+                <include name="**/${resource.dir}/**"/>
+            </fileset>
         </jar>
     </target>
 
