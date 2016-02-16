@@ -131,7 +131,7 @@ public class Driver {
 
         float referenceAngle = car.getRepresentation().getVector().getDir().getAngle();
 
-        while (referenceAngle - car.getRepresentation().getVector().getDir().getAngle() < degrees) {
+        while ((referenceAngle - car.getRepresentation().getVector().getDir().getAngle() < degrees) && !car.checkBumper()) {
             steerLeft();
             accelerate();
         }
@@ -143,7 +143,7 @@ public class Driver {
 
         float referenceAngle = car.getRepresentation().getVector().getDir().getAngle();
 
-        while (car.getRepresentation().getVector().getDir().getAngle() - referenceAngle < degrees) {
+        while ((car.getRepresentation().getVector().getDir().getAngle() - referenceAngle < degrees) && !car.checkBumper()) {
             steerRight();
             accelerate();
         }
@@ -173,12 +173,12 @@ public void reversing() throws InterruptedException {
     }
     */
     public void reversing() throws InterruptedException {
-        brakePedal();
+/*        brakePedal();
         brakePedal();
         brakePedal();
         changeShift();
+        accelerate();*/
 
-        accelerate();
         //calc the angle to wall. Need it to decide which side should I steeringWheel to.
         float wallAngle = car.getRepresentation().getVector().getDir().getAngle() % 360; //HORRIVEL!
         //inverse steeringWheel to max

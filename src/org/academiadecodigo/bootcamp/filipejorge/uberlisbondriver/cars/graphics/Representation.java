@@ -30,34 +30,35 @@ public class Representation {
 
 
         //temp picture to get width and height. It's a sign that something is no well structured...
-        // this.picture = UberCarPicture.valueOf(car.getCarType().toString()).getPicture(0, 0);
+        this.picture = UberCarPicture.valueOf(car.getCarType().toString()).getPicture(0, 0);
 
 
-        // this.width = this.picture.getWidth();
-        // this.height = this.picture.getHeight(); //TODO:check new size, not working properly.
+        this.width = this.picture.getWidth();
+        this.height = this.picture.getHeight(); //TODO:check new size, not working properly.
 
-        this.vector = new Vector();
-        //this.picture = UberCarPicture.valueOf(car.getCarType().toString()).getPicture(this.vector.getPos().getX(), this.vector.getPos().getY());
-        //this.picture.draw();
+        this.vector = new Vector(width, height);
+        this.picture = UberCarPicture.valueOf(car.getCarType().toString()).getPicture(this.vector.getPos().getX(), this.vector.getPos().getY());
+        this.picture.draw();
+
         //create vector
-        //this.vector = new Vector(width, height);
-        this.width = 20;
-        this.height = 20;
+        //this.vector = new Vector();
+        //this.width = 20;
+        //this.height = 20;
 
         this.color = car.getCarType().getColor();
         //this.color = new Color((int) (Math.random() * 255), (int) (Math.random() * 255), (int) (Math.random() * 255));
 
 
-        this.rectangle = new Rectangle(this.vector.getPos().getX(), this.vector.getPos().getY(), width, height);
-        this.rectangle.setColor(this.color);
-        this.rectangle.fill();
+        //this.rectangle = new Rectangle(this.vector.getPos().getX(), this.vector.getPos().getY(), width, height);
+        //this.rectangle.setColor(this.color);
+        //this.rectangle.fill();
 
-        float xCenter = this.vector.getPos().getX() + (width / 2);
-        float yCenter = this.vector.getPos().getY() + (height / 2);
+        //float xCenter = this.vector.getPos().getX() + (width / 2);
+        //float yCenter = this.vector.getPos().getY() + (height / 2);
 
-        this.circleDir = new Ellipse(xCenter, yCenter, 15, 15);
-        this.circleDir.setColor(this.color);
-        this.circleDir.fill();
+        //this.circleDir = new Ellipse(xCenter, yCenter, 15, 15);
+        //this.circleDir.setColor(this.color);
+        //this.circleDir.fill();
 
         //this.dirLine = new Line(xCenter, yCenter, this.rectangle.getX(), this.rectangle.getY());
         adjustDirLine();
@@ -95,8 +96,8 @@ public class Representation {
     public void setCrashed() {
         //this.picture.setColorAt(10, 10, this.color);
         this.color = new Color(this.color.getRed() / 2, this.color.getGreen() / 2, this.color.getBlue() / 2);
-        this.rectangle.setColor(this.color);
-        this.rectangle.draw();
+        //this.rectangle.setColor(this.color);
+        //this.rectangle.draw();
     }
 
     public boolean isOnEdge() {
@@ -104,19 +105,20 @@ public class Representation {
     }
 
     public void move(int speed, float angle, int shift) {
-        if (isOnEdge() || vector.isOutsideField()) {
+     /*   if (isOnEdge() || vector.isOutsideField()) {
             if (vector.isTurnToMove(speed)) { //TODO: speed not working!
 
-
-                vector.move(speed, 0, shift); //TODO: é aqui que pode resolver o voltar para tras
+                vector.move(speed, angle, shift); //TODO: é aqui que pode resolver o voltar para tras
+                System.out.println("turnback-----------------------");
                 this.draw();
             }
-        } else {
+        } else {*/
             if (vector.isTurnToMove(speed)) { //TODO: speed not working!
+                System.out.println("normal");
                 vector.move(speed, angle, shift);
                 this.draw();
             }
-        }
+
     }
 
 
@@ -129,13 +131,13 @@ public class Representation {
         float xRelative = pos.getX() - lastPos.getX();
         float yRelative = pos.getY() - lastPos.getY();
 
-        adjustDirLine();
+        //adjustDirLine();
         //this.dirLine.translate(xRelative, yRelative);
         //this.dirLine.draw();
-        this.circleDir.fill();
-        this.rectangle.setColor(this.color);
-        this.rectangle.translate(xRelative, yRelative);
-        //this.picture.translate(xRelative, yRelative);
+        //this.circleDir.fill();
+        //this.rectangle.setColor(this.color);
+        //this.rectangle.translate(xRelative, yRelative);
+        this.picture.translate(xRelative, yRelative);
         //this.infoText.setColor(Color.BLACK);
         //this.infoText.translate(xRelative, yRelative);
         //this.infoText.draw();

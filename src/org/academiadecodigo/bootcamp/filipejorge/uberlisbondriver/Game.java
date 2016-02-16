@@ -11,7 +11,7 @@ import org.academiadecodigo.simplegraphics.mouse.MouseHandler;
 
 public class Game {
 
-    public static final int MANUFACTURED_CARS = 10;
+    public static final int MANUFACTURED_CARS = 0;
 
     public static final int MAXIMUM_CAR_SPEED = CarType.getAllMaxSpeed();
 

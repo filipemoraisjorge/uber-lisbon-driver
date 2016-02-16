@@ -27,11 +27,12 @@ public class Vector {
     private Position lastPos;
     private float turnAccumulator;
 
-    public Vector() {
+    public Vector(int width, int height) {
 
-        Vector.validBoundaries(xBoundMin, yBoundMin, xBoundMax, yBoundMax);
+        //Vector.validBoundaries(xBoundMin, yBoundMin, xBoundMax, yBoundMax);
+
+        //TODO: update validbound to reflect the size of cars
         //Vector.validBoundaries(xBoundMin, yBoundMin, xBoundMax - (width), yBoundMax - (height));
-
 
         this.pos = new Position(xBoundMin, yBoundMin, xBoundMax, yBoundMax);
         this.dir = new Direction();
