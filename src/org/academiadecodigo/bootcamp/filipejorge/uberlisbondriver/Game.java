@@ -11,7 +11,7 @@ import org.academiadecodigo.simplegraphics.mouse.MouseHandler;
 
 public class Game {
 
-    public static final int MANUFACTURED_CARS = 0;
+    public static final int MANUFACTURED_CARS = 1;
 
     public static final int MAXIMUM_CAR_SPEED = CarType.getAllMaxSpeed();
 
@@ -41,14 +41,14 @@ public class Game {
      */
     public void init() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
 
-        drivers = new Driver[MANUFACTURED_CARS + 1];
+        drivers = new Driver[MANUFACTURED_CARS];
 
-        Driver player = new PlayerDriver(new PlayerCar(CarType.UBERX));
-        KeyboardHandler carControlHandler = new CarKeybHandler(player.getCar());
-        MouseHandler carMouseHandler = new CarMouseHandler(player.getCar());
-        drivers[0] = player;
-
-        for (int i = 1; i < drivers.length; i++) {
+        //Driver player = new PlayerDriver(new PlayerCar(CarType.UBERX));
+        //KeyboardHandler carControlHandler = new CarKeybHandler(player.getCar());
+        //MouseHandler carMouseHandler = new CarMouseHandler(player.getCar());
+        //drivers[0] = player;
+        System.out.println(drivers.length);
+        for (int i = drivers.length - MANUFACTURED_CARS; i < drivers.length; i++) {
             //driver has a car
 
             drivers[i] = new Driver(CarFactory.getNewCar());

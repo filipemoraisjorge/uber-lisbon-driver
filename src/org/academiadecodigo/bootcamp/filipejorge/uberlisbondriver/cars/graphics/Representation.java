@@ -53,12 +53,12 @@ public class Representation {
         //this.rectangle.setColor(this.color);
         //this.rectangle.fill();
 
-        //float xCenter = this.vector.getPos().getX() + (width / 2);
-        //float yCenter = this.vector.getPos().getY() + (height / 2);
+        float xCenter = this.vector.getPos().getX() + (width / 2);
+        float yCenter = this.vector.getPos().getY() + (height / 2);
 
-        //this.circleDir = new Ellipse(xCenter, yCenter, 15, 15);
-        //this.circleDir.setColor(this.color);
-        //this.circleDir.fill();
+        this.circleDir = new Ellipse(xCenter, yCenter, 15, 15); //start position marker
+        this.circleDir.setColor(this.color);
+        this.circleDir.fill();
 
         //this.dirLine = new Line(xCenter, yCenter, this.rectangle.getX(), this.rectangle.getY());
         adjustDirLine();
@@ -94,7 +94,7 @@ public class Representation {
     }
 
     public void setCrashed() {
-        //this.picture.setColorAt(10, 10, this.color);
+        this.picture.setColorAt(1, 1, this.color);
         this.color = new Color(this.color.getRed() / 2, this.color.getGreen() / 2, this.color.getBlue() / 2);
         //this.rectangle.setColor(this.color);
         //this.rectangle.draw();
@@ -105,20 +105,10 @@ public class Representation {
     }
 
     public void move(int speed, float angle, int shift) {
-     /*   if (isOnEdge() || vector.isOutsideField()) {
-            if (vector.isTurnToMove(speed)) { //TODO: speed not working!
-
-                vector.move(speed, angle, shift); //TODO: é aqui que pode resolver o voltar para tras
-                System.out.println("turnback-----------------------");
-                this.draw();
-            }
-        } else {*/
-            if (vector.isTurnToMove(speed)) { //TODO: speed not working!
-                System.out.println("normal");
-                vector.move(speed, angle, shift);
-                this.draw();
-            }
-
+        if (vector.isTurnToMove(speed)) { //TODO: speed not working!
+            vector.move(speed, angle, shift);
+            this.draw();
+        }
     }
 
 
@@ -131,10 +121,10 @@ public class Representation {
         float xRelative = pos.getX() - lastPos.getX();
         float yRelative = pos.getY() - lastPos.getY();
 
-        //adjustDirLine();
+        adjustDirLine();
         //this.dirLine.translate(xRelative, yRelative);
         //this.dirLine.draw();
-        //this.circleDir.fill();
+        this.circleDir.fill();
         //this.rectangle.setColor(this.color);
         //this.rectangle.translate(xRelative, yRelative);
         this.picture.translate(xRelative, yRelative);
@@ -152,16 +142,17 @@ public class Representation {
 
     private void adjustDirLine() {
         float xCenter = this.vector.getPos().getX() + (width / 2);
-        float yCenter = this.vector.getPos().getY() + (width / 2);
+        float yCenter = this.vector.getPos().getY() + (height / 2);
 
+        /*
         // x = r × cos( θ )
         // y = r × sin( θ )
         float xDir = (width / 2) * (float) (Math.cos(this.vector.getDir().getAngleRad()));
-        float yDir = (width / 2) * (float) (Math.sin(this.vector.getDir().getAngleRad()));
+        float yDir = (height / 2) * (float) (Math.sin(this.vector.getDir().getAngleRad()));
 
         float xDirCenter = xCenter + xDir;
         float yDirCenter = yCenter + yDir;
-
+        */
 
         //this.dirLine = new Line(xCenter, yCenter, xDirCenter, yDirCenter);
         //this.dirLine = new Line(xCenter, yCenter, xCenter, yCenter);
