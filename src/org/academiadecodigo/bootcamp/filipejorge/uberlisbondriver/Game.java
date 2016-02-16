@@ -43,12 +43,13 @@ public class Game {
 
         drivers = new Driver[MANUFACTURED_CARS];
 
-        //Driver player = new PlayerDriver(new PlayerCar(CarType.UBERX));
-        //KeyboardHandler carControlHandler = new CarKeybHandler(player.getCar());
-        //MouseHandler carMouseHandler = new CarMouseHandler(player.getCar());
-        //drivers[0] = player;
+        Driver player = new PlayerDriver(new PlayerCar(CarType.UBERX));
+        KeyboardHandler carControlHandler = new CarKeybHandler(player.getCar());
+        MouseHandler carMouseHandler = new CarMouseHandler(player.getCar());
+        drivers[0] = player;
         System.out.println(drivers.length);
-        for (int i = drivers.length - MANUFACTURED_CARS; i < drivers.length; i++) {
+
+        for (int i = 1 + drivers.length - MANUFACTURED_CARS; i < drivers.length; i++) {
             //driver has a car
 
             drivers[i] = new Driver(CarFactory.getNewCar());
