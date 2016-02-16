@@ -1,5 +1,6 @@
 package org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars;
 
+import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.graphics.ColorUber;
 import org.academiadecodigo.simplegraphics.graphics.Color;
 
 /**
@@ -26,26 +27,6 @@ public enum CarType {
         this.color = color;
     }
 
-    public Class getCarClass() {
-        return carClass;
-    }
-
-    public int getMaxSpeed() {
-        return maxSpeed;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
     public static int getMaxSize() {
         int size = 0;
         for (CarType cartype : CarType.values()) {
@@ -64,5 +45,25 @@ public enum CarType {
             }
         }
         return speed;
+    }
+
+    public Class getCarClass() {
+        return carClass;
+    }
+
+    public int getMaxSpeed() {
+        return maxSpeed;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public Color getColor() {
+        return color;
     }
 }

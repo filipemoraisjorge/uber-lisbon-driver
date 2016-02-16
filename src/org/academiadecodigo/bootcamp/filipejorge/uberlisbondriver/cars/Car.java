@@ -1,7 +1,6 @@
 package org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars;
 
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.graphics.Representation;
-import org.academiadecodigo.simplegraphics.graphics.Color;
 
 
 abstract public class Car {
@@ -81,11 +80,6 @@ abstract public class Car {
         this.steerAngle = 0;
     }
 
-    public void setColor(Color color) {
-        this.representation.setColor(color);
-    }
-
-
     public void move() {
 
         if (!isCrashed() /*&& !checkBumper()*/) {
@@ -97,7 +91,6 @@ abstract public class Car {
         }
 
     }
-
 
     public boolean checkBumper() {
         boolean warn1 = representation.isOnEdge();
@@ -133,6 +126,12 @@ abstract public class Car {
                 break;
         }
     }
+
+    public void inverteShift() {
+        gearShift = -gearShift;
+    }
+
+
 
     public boolean checkCrashed(Car car) {
         return this.representation.collide(car.representation);

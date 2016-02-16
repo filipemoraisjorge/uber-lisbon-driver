@@ -62,6 +62,8 @@ public class Vector {
         return ((pos.getX() < xBoundMin) || (pos.getX() > xBoundMax) || (pos.getY() < yBoundMin) || (pos.getY() > yBoundMax)); //pos
     }
 
+
+
     public boolean isOnEdge() {
         float futureX = pos.getX() + dir.getxDir();
         float futureY = pos.getY() + dir.getyDir();

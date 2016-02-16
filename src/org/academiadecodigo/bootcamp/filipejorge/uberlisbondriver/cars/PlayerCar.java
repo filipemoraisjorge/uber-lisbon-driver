@@ -1,5 +1,6 @@
 package org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars;
 
+import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.graphics.ColorUber;
 import org.academiadecodigo.simplegraphics.graphics.Color;
 
 
@@ -14,8 +15,8 @@ public class PlayerCar extends Car {
     public PlayerCar(CarType carType) {
         super(carType);
 
-        super.setColor(ColorUber.BLUE.getColor());
 
+        super.getRepresentation().setColor(ColorUber.BLUE.getColor());
 
     }
 

@@ -1,10 +1,9 @@
 package org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.field;
 
 
-import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.ColorUber;
+import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.graphics.ColorUber;
 import org.academiadecodigo.simplegraphics.graphics.Color;
 import org.academiadecodigo.simplegraphics.graphics.Rectangle;
-import org.academiadecodigo.simplegraphics.pictures.Picture;
 
 public final class Field {
 
