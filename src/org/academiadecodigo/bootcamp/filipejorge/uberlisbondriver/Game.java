@@ -6,29 +6,30 @@ import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.drivers.Driver
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.drivers.PlayerDriver;
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.field.Field;
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.CarType;
+import org.academiadecodigo.simplegraphics.graphics.Canvas;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardHandler;
 import org.academiadecodigo.simplegraphics.mouse.MouseHandler;
+
+import javax.swing.*;
 
 public class Game {
 
     public static final int MANUFACTURED_CARS = 1;
 
     public static final int MAXIMUM_CAR_SPEED = CarType.getAllMaxSpeed();
-
+    /**
+     * Animation delay
+     */
+    public static int delay;
     /**
      * Graphical Car Field
      */
     Field field;
-
     /**
      * Container of Cars
      */
     Car[] cars;
     Driver[] drivers;
-    /**
-     * Animation delay
-     */
-    public static int delay;
 
     public Game(int delay) {
 
@@ -47,13 +48,13 @@ public class Game {
         KeyboardHandler carControlHandler = new CarKeybHandler(player.getCar());
         MouseHandler carMouseHandler = new CarMouseHandler(player.getCar());
         drivers[0] = player;
-        System.out.println(drivers.length);
 
         for (int i = 1 + drivers.length - MANUFACTURED_CARS; i < drivers.length; i++) {
             //driver has a car
 
             drivers[i] = new Driver(CarFactory.getNewCar());
-            drivers[i].getCar().getRepresentation().setInfoText(i + "");
+            //drivers[i].getCar().getRepresentation().setInfoText(i + "");
+
         }
     }
 
@@ -78,7 +79,6 @@ public class Game {
                     checkCollision(i);
                 }
             }
-
 
         }
     }

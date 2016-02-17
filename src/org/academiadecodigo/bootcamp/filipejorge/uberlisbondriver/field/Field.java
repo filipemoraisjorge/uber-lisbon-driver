@@ -2,19 +2,27 @@ package org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.field;
 
 
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.graphics.ColorUber;
+import org.academiadecodigo.simplegraphics.graphics.Canvas;
 import org.academiadecodigo.simplegraphics.graphics.Color;
 import org.academiadecodigo.simplegraphics.graphics.Rectangle;
 import org.academiadecodigo.simplegraphics.pictures.Picture;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.logging.FileHandler;
 
 public final class Field {
 
-    private static final int MARGIN_LEFT = 10;
-    private static final int MARGIN_TOP = 10;
-
+    public static int x;
+    public static int y;
     public static int width;
     public static int height;
+    private static int MARGIN_LEFT = 10;
+    private static int MARGIN_TOP = 10;
+    private static int BORDER = 10;
+    public static int offsetX = MARGIN_LEFT + BORDER;
+    private static int SKY = 108;
+    public static int offsetY = MARGIN_TOP + BORDER + SKY;
 
     //This class is not supposed to be instantiated
     private Field() {
@@ -25,32 +33,46 @@ public final class Field {
      */
     public static void init() {
 
-        //Load background
-        Picture cityBackground1 = new Picture(MARGIN_LEFT + 1, MARGIN_TOP + 1, "resources/uber-city_background1.png");
+
+        //illustration at the top
+        Picture citySkyLine = new Picture(offsetX, offsetY, "resources/uber-skyline.png");
+        //image at the field background
+        offsetY = offsetY + citySkyLine.getHeight() + BORDER;
+        Picture cityBackground1 = new Picture(offsetX, offsetY, "resources/uber-city_background1.png");
         //Picture cityBackground2 = new Picture(MARGIN_LEFT + 1, MARGIN_TOP + 1 + cityBackground1.getHeight() - 1, "resources/uber-city_background2.png");
 
-        //Set field size, where the playing takes place
-        Field.width = cityBackground1.getWidth() + 1;
-        Field.height = cityBackground1.getHeight() + 1;
+        //Set field x,y, size, where the playing takes place
+        Field.x = cityBackground1.getX();
+        Field.y = cityBackground1.getY();
+        Field.width = cityBackground1.getWidth();
+        Field.height = cityBackground1.getHeight();
 
-        //Set the valid boundaries where vectors can be created/moved
-        //second thoughts, Shouldn't Field define this, whats the propose of Class Field
-        Vector.validBoundaries(MARGIN_LEFT + 1, MARGIN_TOP + 1, Field.width - 1 - MARGIN_LEFT, Field.height - 1 - MARGIN_TOP);
-
-        //Draw a border.
-        Rectangle fieldBorder = new Rectangle(MARGIN_LEFT, MARGIN_TOP, width, height);
-        Rectangle fieldBack = new Rectangle(MARGIN_LEFT, MARGIN_TOP, width, height);
-        fieldBorder.setColor(new Color(205, 205, 205));
-        fieldBorder.fill();
-        fieldBack.setColor(ColorUber.BLUE.getColor());
-
-        //draw it all
-        fieldBack.draw();
-        cityBackground1.draw();
+        //create a background.
+        Rectangle background = new Rectangle(MARGIN_LEFT, MARGIN_TOP, offsetX + width, offsetY + height);
+        System.out.println(offsetY + height);
+        background.setColor(ColorUber.BLUE.getColor());
+        //and a field background
+        Rectangle fieldBack = new Rectangle(offsetX, offsetY, width, height);
+        fieldBack.setColor(new Color(205, 205, 205));
         //cityBackground2.draw();
 
-        Picture citySkyLine = new Picture(MARGIN_LEFT + 1, MARGIN_TOP + height + 10, "resources/uber-skyline.png");
+        //draw it all
+        background.fill();
+        fieldBack.fill();
+        cityBackground1.draw();
         citySkyLine.draw();
+
+
+        //TODO:Set the valid boundaries where vectors can be created/moved
+        //second thoughts, Shouldn't Field define this, whats the propose of Class Field
+        //every Car could have different sizes, so this needs to be in vector constructor and be non static,
+        // It also needs to be updated when resizing windows,
+        //Vector.validBoundaries(offsetX, offsetY, Field.width, Field.height);
+
+        System.out.println(background.getWidth());
+
+
     }
+    //TODO:grow to window size method
 
 }

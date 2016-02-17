@@ -20,14 +20,13 @@ public class Representation {
     private Color color;
 
     private Picture picture;
-    private Rectangle rectangle;
+    //private Rectangle rectangle;
     private Ellipse circleDir;
-    private Line dirLine;
-    private Text infoText;
+    //private Line dirLine;
+    //private Text infoText;
 
 
     public Representation(Car car) {
-
 
         //temp picture to get width and height. It's a sign that something is no well structured...
         this.picture = UberCarPicture.valueOf(car.getCarType().toString()).getPicture(0, 0);
@@ -35,10 +34,10 @@ public class Representation {
 
         this.width = this.picture.getWidth();
         this.height = this.picture.getHeight(); //TODO:check new size, not working properly.
-
         this.vector = new Vector(width, height);
-        this.picture = UberCarPicture.valueOf(car.getCarType().toString()).getPicture(this.vector.getPos().getX(), this.vector.getPos().getY());
-        this.picture.draw();
+        float x = this.vector.getPos().getX();
+        float y = this.vector.getPos().getY();
+        this.picture = UberCarPicture.valueOf(car.getCarType().toString()).getPicture(x,y);
 
         //create vector
         //this.vector = new Vector();
@@ -53,18 +52,17 @@ public class Representation {
         //this.rectangle.setColor(this.color);
         //this.rectangle.fill();
 
-        float xCenter = this.vector.getPos().getX() + (width / 2);
-        float yCenter = this.vector.getPos().getY() + (height / 2);
-
+        float xCenter = x + (width / 2);
+        float yCenter = y + (height / 2);
         this.circleDir = new Ellipse(xCenter, yCenter, 15, 15); //start position marker
         this.circleDir.setColor(this.color);
-        this.circleDir.fill();
 
         //this.dirLine = new Line(xCenter, yCenter, this.rectangle.getX(), this.rectangle.getY());
-        adjustDirLine();
         //this.dirLine.draw();
         //this.infoText = new Text(this.vector.getPos().getX(), this.vector.getPos().getY(), "");
         //this.draw();
+        this.circleDir.fill();
+        this.picture.draw();
 
     }
 
@@ -90,7 +88,7 @@ public class Representation {
     }
 
     public void setInfoText(String infoText) {
-        this.infoText = new Text(this.vector.getPos().getX(), this.vector.getPos().getY(), infoText);
+        //this.infoText = new Text(this.vector.getPos().getX(), this.vector.getPos().getY(), infoText);
     }
 
     public void setCrashed() {
@@ -121,7 +119,7 @@ public class Representation {
         float xRelative = pos.getX() - lastPos.getX();
         float yRelative = pos.getY() - lastPos.getY();
 
-        adjustDirLine();
+        adjustDirLine(pos.getX(),pos.getY());
         //this.dirLine.translate(xRelative, yRelative);
         //this.dirLine.draw();
         this.circleDir.fill();
@@ -140,7 +138,7 @@ public class Representation {
         }
     }
 
-    private void adjustDirLine() {
+    private void adjustDirLine(float x, float y) {
         float xCenter = this.vector.getPos().getX() + (width / 2);
         float yCenter = this.vector.getPos().getY() + (height / 2);
 

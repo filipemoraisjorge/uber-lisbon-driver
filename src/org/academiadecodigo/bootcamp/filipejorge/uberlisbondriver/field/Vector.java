@@ -18,10 +18,10 @@ import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.Game; //becaus
  */
 public class Vector {
 
-    private static int xBoundMin;//= MARGIN+1;
-    private static int yBoundMin;//= MARGIN+1;
-    private static int xBoundMax;//= (Field.width - 1)-1;
-    private static int yBoundMax;//= (Field.height - 1)-1;
+    private int xBoundMin;
+    private int yBoundMin;
+    private int xBoundMax;
+    private int yBoundMax;
     private Position pos;
     private Direction dir;
     private Position lastPos;
@@ -29,10 +29,9 @@ public class Vector {
 
     public Vector(int width, int height) {
 
-        //Vector.validBoundaries(xBoundMin, yBoundMin, xBoundMax, yBoundMax);
 
         //TODO: update validbound to reflect the size of cars
-        //Vector.validBoundaries(xBoundMin, yBoundMin, xBoundMax - (width), yBoundMax - (height));
+        validBoundaries(Field.x,  Field.y, Field.x+Field.width-width, Field.y+Field.height-height);
 
         this.pos = new Position(xBoundMin, yBoundMin, xBoundMax, yBoundMax);
         this.dir = new Direction();
@@ -40,7 +39,7 @@ public class Vector {
         this.lastPos.setPos(this.pos);
     }
 
-    public static void validBoundaries(int xIni, int yIni, int xEnd, int yEnd) {
+    public void validBoundaries(int xIni, int yIni, int xEnd, int yEnd) {
         xBoundMin = xIni;
         yBoundMin = yIni;
         xBoundMax = xEnd;
