@@ -1,6 +1,7 @@
 package org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver;
 
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.Car;
+import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.drivers.Driver;
 import org.academiadecodigo.simplegraphics.mouse.Mouse;
 import org.academiadecodigo.simplegraphics.mouse.MouseEvent;
 import org.academiadecodigo.simplegraphics.mouse.MouseEventType;
@@ -15,8 +16,8 @@ public class CarMouseHandler implements MouseHandler {
     private Car car;
     private Mouse mouse = new Mouse(this);
 
-    CarMouseHandler(Car car) {
-        this.car = car;
+    CarMouseHandler(Driver driver) {
+        this.car = driver.getCar();
         init();
 
     }

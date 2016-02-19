@@ -2,6 +2,7 @@ package org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver;
 
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.Car;
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.SteerDirection;
+import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.drivers.Driver;
 import org.academiadecodigo.simplegraphics.keyboard.Keyboard;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEvent;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEventType;
@@ -14,13 +15,15 @@ public class CarKeybHandler implements KeyboardHandler {
 
     //the Car to be controlled;
     private Car car;
+    private Driver driver;
 
     //Keyboard
     private Keyboard keyboard = new Keyboard(this);
 
 
-    CarKeybHandler(Car car) {
-        this.car = car;
+    CarKeybHandler(Driver driver) {
+        this.driver = driver;
+        this.car = this.driver.getCar();
         init();
 
     }
@@ -52,16 +55,6 @@ public class CarKeybHandler implements KeyboardHandler {
     @Override
     public void keyPressed(KeyboardEvent keyboardEvent) {
 
-          /*
-    UPRIGHT(-1, -1),
-    UP(0, -1), -90, 270
-    UPLEFT(1, -1),
-    RIGHT(1, 0), 0
-    DOWNLEFT(1, 1),
-    DOWN(0, 1), 90
-    DOWNRIGHT(-1, 1),
-    LEFT(-1, 0); 180 -0
-  */
 
         switch (keyboardEvent.getKey()) {
             case 37: { //Left
@@ -73,11 +66,11 @@ public class CarKeybHandler implements KeyboardHandler {
                 break;
             }
             case 38: { //Up
-                car.acceleratePedal();
+                driver.accelerate();
                 break;
             }
             case 40: { //Down
-                car.brakePedal();
+                driver.stop();
                 break;
             }
         }
@@ -86,23 +79,6 @@ public class CarKeybHandler implements KeyboardHandler {
 
     @Override
     public void keyReleased(KeyboardEvent keyboardEvent) {
-        /*switch (keyboardEvent.getKey()) {
-            case 37: { //Left
-                car.setDirection(Direction.LEFT);
-                break;
-            }
-            case 39: {//Right
-                car.setDirection(Direction.RIGHT);
-                break;
-            }
-            case 38: { //Up
-                car.setDirection(Direction.TOP);
-                break;
-            }
-            case 40: { //Down
-                car.setDirection(Direction.DOWN);
-                break;
-            }
-        }*/
+
     }
 }

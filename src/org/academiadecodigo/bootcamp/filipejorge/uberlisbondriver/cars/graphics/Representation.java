@@ -103,10 +103,10 @@ public class Representation {
     }
 
     public void move(int speed, float angle, int shift) {
-        if (vector.isTurnToMove(speed)) { //TODO: speed not working!
+      //  if (vector.isTurnToMove(speed)) { //TODO: speed not working!
             vector.move(speed, angle, shift);
             this.draw();
-        }
+       // }
     }
 
 
@@ -134,7 +134,7 @@ public class Representation {
         try {
             Thread.sleep(Game.delay);
         } catch (InterruptedException ex) {
-            // do nothing...
+            System.out.printf("thread interrupted exception");
         }
     }
 

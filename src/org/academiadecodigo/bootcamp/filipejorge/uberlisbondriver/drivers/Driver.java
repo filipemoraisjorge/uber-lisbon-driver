@@ -98,18 +98,18 @@ public class Driver {
 
     //Driver's maneuvers
 
-    public void moveForward() throws InterruptedException {
+    public void moveForward() {
         car.setGearShift(1);
         accelerate();
     }
 
-    public void moveBackwards() throws InterruptedException {
+    public void moveBackwards() {
         car.setGearShift(-1);
         accelerate();
     }
 
 
-    public void moveForward(int distance) throws InterruptedException {
+    public void moveForward(int distance) {
         int distanceCount = 0;
         while (distanceCount < distance) {
             moveForward();
@@ -118,7 +118,7 @@ public class Driver {
         stop();
     }
 
-    public void moveBackwards(int distance) throws InterruptedException {
+    public void moveBackwards(int distance) {
         int distanceCount = 0;
         while (distanceCount < distance) {
             moveBackwards();
@@ -127,7 +127,7 @@ public class Driver {
         stop();
     }
 
-    public void turnLeft(int degrees) throws InterruptedException {
+    public void turnLeft(int degrees) {
 
         float referenceAngle = car.getRepresentation().getVector().getDir().getAngle();
 
@@ -139,7 +139,7 @@ public class Driver {
         steerMiddle();
     }
 
-    public void turnRight(int degrees) throws InterruptedException {
+    public void turnRight(int degrees) {
 
         float referenceAngle = car.getRepresentation().getVector().getDir().getAngle();
 
@@ -151,7 +151,7 @@ public class Driver {
         steerMiddle();
     }
 /*
-public void reversing() throws InterruptedException {
+public void reversing() {
         //stop();
 
         while(car.getRepresentation().getVector().isOutsideField()) {
@@ -172,12 +172,7 @@ public void reversing() throws InterruptedException {
         moveForward();
     }
     */
-    public void reversing() throws InterruptedException {
-/*        brakePedal();
-        brakePedal();
-        brakePedal();
-        changeShift();
-        accelerate();*/
+    public void reversing() {
 
         //calc the angle to wall. Need it to decide which side should I steeringWheel to.
         float wallAngle = car.getRepresentation().getVector().getDir().getAngle() % 360; //HORRIVEL!
@@ -193,7 +188,7 @@ public void reversing() throws InterruptedException {
     }
 
 
-    public void drive() throws InterruptedException {
+    public void drive()  {
 
         if (car.checkBumper()) {
             //if hits something it starts reversing
@@ -222,7 +217,7 @@ public void reversing() throws InterruptedException {
     }
 
 
-    public void decideChangeDirection() throws InterruptedException {
+    public void decideChangeDirection() {
 
         double random = (Math.random() * 100);
         if (random < directionChangeRate) {

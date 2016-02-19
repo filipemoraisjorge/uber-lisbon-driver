@@ -70,25 +70,25 @@ public class Vector {
         return ((futureX < xBoundMin) || (futureX > xBoundMax) || (futureY < yBoundMin) || (futureY > yBoundMax)); //pos
     }
 
-    private void incTurnAccumulator(int speed) {
-        this.turnAccumulator += (float) speed / Game.MAXIMUM_CAR_SPEED;
+/*    private void incTurnAccumulator(int speed) {
+        this.turnAccumulator += (float) speed / Game.MAXIMUM_CARS_SPEED;
 
     }
 
     public boolean isTurnToMove(int speed) {
-        /** more speed = move more often
+        *//** more speed = move more often
          * so until the accum doesn't get to 1 the car doesn't move.
          * the fastest car moves every turn.
-         */
+         *//*
 
-        if (turnAccumulator % (Game.MAXIMUM_CAR_SPEED) < 1) { //if is bellow 1 then it isn't your turn to move
+        if (turnAccumulator % (Game.MAXIMUM_CARS_SPEED) < 1) { //if is bellow 1 then it isn't your turn to move
             this.incTurnAccumulator(speed); //add a little more
             return false;
         } else {
             turnAccumulator = 0; //It's your time to move, lets reset the accumulator.
             return true;
         }
-    }
+    }*/
 
     public void move(int speed, float steerAngle, int shift) {
 

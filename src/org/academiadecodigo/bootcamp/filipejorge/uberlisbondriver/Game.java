@@ -6,17 +6,14 @@ import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.drivers.Driver
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.drivers.PlayerDriver;
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.field.Field;
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.CarType;
-import org.academiadecodigo.simplegraphics.graphics.Canvas;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardHandler;
 import org.academiadecodigo.simplegraphics.mouse.MouseHandler;
-
-import javax.swing.*;
 
 public class Game {
 
     public static final int MANUFACTURED_CARS = 1;
 
-    public static final int MAXIMUM_CAR_SPEED = CarType.getAllMaxSpeed();
+    public static final int MAXIMUM_CARS_SPEED = CarType.getAllMaxSpeed();
     /**
      * Animation delay
      */
@@ -45,8 +42,8 @@ public class Game {
         drivers = new Driver[MANUFACTURED_CARS];
 
         Driver player = new PlayerDriver(new PlayerCar(CarType.UBERX));
-        KeyboardHandler carControlHandler = new CarKeybHandler(player.getCar());
-        MouseHandler carMouseHandler = new CarMouseHandler(player.getCar());
+        KeyboardHandler carControlHandler = new CarKeybHandler(player);
+        MouseHandler carMouseHandler = new CarMouseHandler(player);
         drivers[0] = player;
 
         for (int i = 1 + drivers.length - MANUFACTURED_CARS; i < drivers.length; i++) {
@@ -63,17 +60,25 @@ public class Game {
      *
      * @throws InterruptedException
      */
-    public void start() throws InterruptedException {
-
+    public void start() {
+        int[] turnArray = new int[MANUFACTURED_CARS];
         while (true) {
 
             // Pause for a while
-            //Thread.sleep(delay);
-
+/*            try {
+                Thread.sleep(Game.delay);
+            } catch (InterruptedException ex) {
+                System.out.printf("thread interrupted exception");
+            }*/
             // Move all cars
             for (int i = 0; i < drivers.length; i++) {
-
                 if (!drivers[i].getCar().isCrashed()) {
+                    if (turnArray[i] % (Game.MAXIMUM_CARS_SPEED) < 1) { //if is bellow 1 then it isn't your turn to move
+                        turnArray[i] += (float) drivers[i].getCar().getSpeed() / Game.MAXIMUM_CARS_SPEED;
+                    } else {
+                        turnArray[i] = 0; //It's your time to move, lets reset the accumulator.
+                    }
+
                     drivers[i].drive();
 
                     checkCollision(i);
