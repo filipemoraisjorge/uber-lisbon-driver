@@ -30,18 +30,21 @@ public class CarKeybHandler implements KeyboardHandler {
 
     public void init() {
         KeyboardEvent keyEventLeft = new KeyboardEvent();
-        KeyboardEvent keyEventRigth = new KeyboardEvent();
+        KeyboardEvent keyEventRight = new KeyboardEvent();
 
         KeyboardEvent keyEventUp = new KeyboardEvent();
         KeyboardEvent keyEventDown = new KeyboardEvent();
+
+        KeyboardEvent keyEventLeftRelease = new KeyboardEvent();
+        KeyboardEvent keyEventRightRelease = new KeyboardEvent();
 
         keyEventLeft.setKey(KeyboardEvent.KEY_LEFT); //37
         keyEventLeft.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
         keyboard.addEventListener(keyEventLeft);
 
-        keyEventRigth.setKey(KeyboardEvent.KEY_RIGHT); //39
-        keyEventRigth.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-        keyboard.addEventListener(keyEventRigth);
+        keyEventRight.setKey(KeyboardEvent.KEY_RIGHT); //39
+        keyEventRight.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        keyboard.addEventListener(keyEventRight);
 
         keyEventUp.setKey(KeyboardEvent.KEY_UP); //38
         keyEventUp.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
@@ -50,6 +53,14 @@ public class CarKeybHandler implements KeyboardHandler {
         keyEventDown.setKey(KeyboardEvent.KEY_DOWN); //40
         keyEventDown.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
         keyboard.addEventListener(keyEventDown);
+
+        keyEventLeftRelease.setKey(KeyboardEvent.KEY_LEFT); //38
+        keyEventLeftRelease.setKeyboardEventType(KeyboardEventType.KEY_RELEASED);
+        keyboard.addEventListener(keyEventLeftRelease);
+
+        keyEventRightRelease.setKey(KeyboardEvent.KEY_RIGHT); //40
+        keyEventRightRelease.setKeyboardEventType(KeyboardEventType.KEY_RELEASED);
+        keyboard.addEventListener(keyEventRightRelease);
     }
 
     @Override
@@ -66,11 +77,11 @@ public class CarKeybHandler implements KeyboardHandler {
                 break;
             }
             case 38: { //Up
-                driver.accelerate();
+                driver.pressAccelerate();
                 break;
             }
             case 40: { //Down
-                driver.stop();
+                driver.brakePedal();
                 break;
             }
         }
@@ -79,6 +90,19 @@ public class CarKeybHandler implements KeyboardHandler {
 
     @Override
     public void keyReleased(KeyboardEvent keyboardEvent) {
+
+        switch (keyboardEvent.getKey()) {
+            case 37: { //Left
+                car.setSteerAngle(0);
+                //driver.steerMiddle();
+                break;
+            }
+            case 39: {//Right
+                car.setSteerAngle(0);
+                //driver.steerMiddle();
+                break;
+            }
+        }
 
     }
 }

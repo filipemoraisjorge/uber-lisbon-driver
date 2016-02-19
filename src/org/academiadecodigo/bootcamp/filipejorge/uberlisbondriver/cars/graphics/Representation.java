@@ -33,7 +33,7 @@ public class Representation {
 
 
         this.width = this.picture.getWidth();
-        this.height = this.picture.getHeight(); //TODO:check new size, not working properly.
+        this.height = this.picture.getHeight();
         this.vector = new Vector(width, height);
         float x = this.vector.getPos().getX();
         float y = this.vector.getPos().getY();
@@ -66,18 +66,15 @@ public class Representation {
 
     }
 
-
-    public int getWidth() {
-        return width;
+    public Picture getPicture() {
+        return picture;
     }
 
-    public void setWidth(int width) {
-        this.width = width;
+    public void setPicture(Picture picture) {
+        this.picture = picture;
     }
 
-    public Color getColor() {
-        return color;
-    }
+
 
     public void setColor(Color color) {
         this.color = color;
@@ -103,10 +100,10 @@ public class Representation {
     }
 
     public void move(int speed, float angle, int shift) {
-      //  if (vector.isTurnToMove(speed)) { //TODO: speed not working!
+        //if (vector.isTurnToMove(speed)) { //TODO: speed not working!
             vector.move(speed, angle, shift);
             this.draw();
-       // }
+        //}
     }
 
 
@@ -162,7 +159,7 @@ public class Representation {
     }
 
     public boolean collide(Representation another) {
-        //TODO: Different Sizes and forms
+        //TODO: Different forms
 
         Position thisPos = vector.getPos();
         Position anotherPos = another.vector.getPos();

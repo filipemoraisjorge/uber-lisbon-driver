@@ -2,7 +2,6 @@ package org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.field;
 
 
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.graphics.ColorUber;
-import org.academiadecodigo.simplegraphics.graphics.Canvas;
 import org.academiadecodigo.simplegraphics.graphics.Color;
 import org.academiadecodigo.simplegraphics.graphics.Rectangle;
 import org.academiadecodigo.simplegraphics.pictures.Picture;
@@ -62,14 +61,6 @@ public final class Field {
         cityBackground1.draw();
         citySkyLine.draw();
 
-
-        //TODO:Set the valid boundaries where vectors can be created/moved
-        //second thoughts, Shouldn't Field define this, whats the propose of Class Field
-        //every Car could have different sizes, so this needs to be in vector constructor and be non static,
-        // It also needs to be updated when resizing windows,
-        //Vector.validBoundaries(offsetX, offsetY, Field.width, Field.height);
-
-        System.out.println(background.getWidth());
 
 
     }

@@ -9,24 +9,20 @@ import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.CarType;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardHandler;
 import org.academiadecodigo.simplegraphics.mouse.MouseHandler;
 
+import javax.swing.*;
+
 public class Game {
 
-    public static final int MANUFACTURED_CARS = 1;
+    public static final int MANUFACTURED_CARS = 2;
 
     public static final int MAXIMUM_CARS_SPEED = CarType.getAllMaxSpeed();
+
     /**
      * Animation delay
      */
     public static int delay;
-    /**
-     * Graphical Car Field
-     */
-    Field field;
-    /**
-     * Container of Cars
-     */
-    Car[] cars;
     Driver[] drivers;
+
 
     public Game(int delay) {
 
@@ -50,7 +46,6 @@ public class Game {
             //driver has a car
 
             drivers[i] = new Driver(CarFactory.getNewCar());
-            //drivers[i].getCar().getRepresentation().setInfoText(i + "");
 
         }
     }
@@ -60,28 +55,32 @@ public class Game {
      *
      * @throws InterruptedException
      */
-    public void start() {
-        int[] turnArray = new int[MANUFACTURED_CARS];
+    public void start() throws InterruptedException {
+
+
+        float[] turnArray = new float[drivers.length];
+
+
         while (true) {
 
+
             // Pause for a while
-/*            try {
-                Thread.sleep(Game.delay);
-            } catch (InterruptedException ex) {
-                System.out.printf("thread interrupted exception");
-            }*/
+            //Thread.sleep(delay);
+
             // Move all cars
             for (int i = 0; i < drivers.length; i++) {
-                if (!drivers[i].getCar().isCrashed()) {
-                    if (turnArray[i] % (Game.MAXIMUM_CARS_SPEED) < 1) { //if is bellow 1 then it isn't your turn to move
-                        turnArray[i] += (float) drivers[i].getCar().getSpeed() / Game.MAXIMUM_CARS_SPEED;
-                    } else {
-                        turnArray[i] = 0; //It's your time to move, lets reset the accumulator.
+
+                if (turnArray[i] % (Game.MAXIMUM_CARS_SPEED) < 1) { //if is bellow 1 then it isn't your turn to move
+                    turnArray[i] += (float) drivers[i].getCar().getSpeed() / Game.MAXIMUM_CARS_SPEED; //add a little more
+
+                    if (!drivers[i].getCar().isCrashed()) {
+                        drivers[i].drive();
+
+                        checkCollision(i);
                     }
 
-                    drivers[i].drive();
-
-                    checkCollision(i);
+                } else {
+                    turnArray[i] = 0; //It's your time to move, lets reset the accumulator.
                 }
             }
 

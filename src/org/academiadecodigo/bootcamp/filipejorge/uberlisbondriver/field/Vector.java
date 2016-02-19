@@ -1,8 +1,6 @@
 package org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.field;
 
 
-import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.Game; //because Vector needs to know the delay
-
 /**
  * Created by filipejorge on 10/02/16.
  * <p>
@@ -25,12 +23,11 @@ public class Vector {
     private Position pos;
     private Direction dir;
     private Position lastPos;
-    private float turnAccumulator;
+    //  private float turnAccumulator; //speed
 
     public Vector(int width, int height) {
 
 
-        //TODO: update validbound to reflect the size of cars
         validBoundaries(Field.x,  Field.y, Field.x+Field.width-width, Field.y+Field.height-height);
 
         this.pos = new Position(xBoundMin, yBoundMin, xBoundMax, yBoundMax);
@@ -72,9 +69,9 @@ public class Vector {
 
 /*    private void incTurnAccumulator(int speed) {
         this.turnAccumulator += (float) speed / Game.MAXIMUM_CARS_SPEED;
+    }*/
 
-    }
-
+  /*
     public boolean isTurnToMove(int speed) {
         *//** more speed = move more often
          * so until the accum doesn't get to 1 the car doesn't move.
@@ -88,7 +85,8 @@ public class Vector {
             turnAccumulator = 0; //It's your time to move, lets reset the accumulator.
             return true;
         }
-    }*/
+    }
+    */
 
     public void move(int speed, float steerAngle, int shift) {
 

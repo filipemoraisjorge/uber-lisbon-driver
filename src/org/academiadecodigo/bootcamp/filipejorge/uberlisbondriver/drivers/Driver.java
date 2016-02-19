@@ -58,41 +58,43 @@ public class Driver {
         while (car.getSpeed() < car.getMaxSpeed()) {
             car.acceleratePedal();
         }
-
         car.move();
+
     }
 
     public void stop() {
         while (car.getSpeed() > 0) {
             car.brakePedal();
         }
-
         car.move();
+
     }
 
     public void steerLeft() {
         while (Math.abs(car.getSteerAngle()) < car.getMAXSTEERINGANGLE()) {
             car.steeringWheel(SteerDirection.LEFT);
-        }
         car.move();
+        }
     }
 
     public void steerRight() {
         while (Math.abs(car.getSteerAngle()) < car.getMAXSTEERINGANGLE()) {
             car.steeringWheel(SteerDirection.RIGHT);
-        }
         car.move();
+        }
     }
 
     public void steerMiddle() {
         while (Math.abs(car.getSteerAngle()) != 0) {
             if (car.getSteerAngle() > 0) {
                 car.steeringWheel(SteerDirection.LEFT);
+                car.move();
             } else {
                 car.steeringWheel(SteerDirection.RIGHT);
+                car.move();
             }
         }
-        car.move();
+
     }
 
 
@@ -150,28 +152,35 @@ public class Driver {
         stop();
         steerMiddle();
     }
-/*
-public void reversing() {
-        //stop();
 
-        while(car.getRepresentation().getVector().isOutsideField()) {
-            steerMiddle();
-            moveBackwards();
-        }
+    public void turnLeftTime(int milliSeconds) {
 
-        //calc the angle to wall. Need it to decide which side should I steeringWheel to.
-        float wallAngle = car.getRepresentation().getVector().getDir().getAngle() % 360; //HORRIVEL!
-        //inverse steeringWheel to max
-        car.setSteerAngle(((wallAngle % 90) <= 45 ? -car.getMAXSTEERINGANGLE() : car.getMAXSTEERINGANGLE()));
-        //moveBackwards(10);
-        while (*//*!car.checkBumper()*//* !car.getRepresentation().getVector().isOutsideField()) { //TODO: another way? only works when on the edge
-            moveBackwards();
+
+        long startTime = System.currentTimeMillis();
+
+        while ((startTime - System.currentTimeMillis() < milliSeconds) && !car.checkBumper()) {
+            System.out.println(startTime - System.currentTimeMillis());
+            car.setSteerAngle(-5);
+            //steerLeft();
+            //accelerate();
         }
+        stop();
         steerMiddle();
-        // stop();
-        moveForward();
     }
-    */
+
+    public void turnRightTime(int milliSeconds) {
+
+        long startTime = System.currentTimeMillis();
+
+        while ((System.currentTimeMillis() - startTime < milliSeconds) && !car.checkBumper()) {
+            car.setSteerAngle(5);
+            //steerRight();
+            //accelerate();
+        }
+        stop();
+        steerMiddle();
+    }
+
     public void reversing() {
 
         //calc the angle to wall. Need it to decide which side should I steeringWheel to.
@@ -179,7 +188,7 @@ public void reversing() {
         //inverse steeringWheel to max
         car.setSteerAngle(((wallAngle % 90) <= 45 ? -car.getMAXSTEERINGANGLE() : car.getMAXSTEERINGANGLE()));
         //moveBackwards(10);
-        while (/*!car.checkBumper()*/ !car.getRepresentation().getVector().isOutsideField()) { //TODO: another way? only works when on the edge
+        while (!car.getRepresentation().getVector().isOutsideField()) { //TODO: another way? only works when on the edge
             moveBackwards();
         }
         steerMiddle();
@@ -224,12 +233,12 @@ public void reversing() {
             switch (turnCounter % 2) {
                 case 0:
 
-                    turnRight((int) (Math.random() * 180));
+                    turnRightTime((int) Math.random());
                     turnCounter++;
                     break;
                 case 1:
 
-                    turnLeft((int) (Math.random() * 180));
+                    turnLeftTime((int) Math.random());
                     turnCounter++;
                     break;
             }

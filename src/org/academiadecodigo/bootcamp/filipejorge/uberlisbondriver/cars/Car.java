@@ -1,5 +1,6 @@
 package org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars;
 
+import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.Game;
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.graphics.Representation;
 
 
@@ -136,6 +137,7 @@ abstract public class Car {
     public boolean checkCrashed(Car car) {
         return this.representation.collide(car.representation);
     }
+
 
     @Override
     public String toString() {

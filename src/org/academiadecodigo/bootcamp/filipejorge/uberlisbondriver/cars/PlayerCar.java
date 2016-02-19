@@ -1,7 +1,9 @@
 package org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars;
 
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.graphics.ColorUber;
+import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.graphics.Representation;
 import org.academiadecodigo.simplegraphics.graphics.Color;
+import org.academiadecodigo.simplegraphics.pictures.Picture;
 
 
 /**
@@ -15,10 +17,21 @@ public class PlayerCar extends Car {
     public PlayerCar(CarType carType) {
         super(carType);
 
+        Representation rep = super.getRepresentation();
+        rep.setColor(ColorUber.BLUE.getColor());
+/*
+        Picture pict = rep.getPicture();
+        System.out.println("create player");
+        for (int i = 0; i < pict.getWidth(); i++) {
+            for (int j = 0; j < pict.getHeight(); j++) {
+                pict.setColorAt(i, j, new Color(255-pict.getColorAt(i,j).getBlue(), 255-pict.getColorAt(i,j).getGreen(), 255-pict.getColorAt(i,j).getBlue()));
 
-        super.getRepresentation().setColor(ColorUber.BLUE.getColor());
+            }
+
+        }*/
 
     }
+
 
     @Override
     public void acceleratePedal() {
