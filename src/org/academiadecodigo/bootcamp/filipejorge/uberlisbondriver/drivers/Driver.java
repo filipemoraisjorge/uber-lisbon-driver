@@ -19,6 +19,7 @@ public class Driver {
 
     private int turnCounter;
 
+    private boolean isReversing;
 
     public Driver(Car car) {
         this.car = car;
@@ -41,7 +42,7 @@ public class Driver {
     //basic operations, with car.move()(refresh animation) in it
 
     public void changeShift() {
-        car.setGearShift((-car.getGearShift()));
+        car.inverteShift();
     }
 
     public void pressAccelerate() {
@@ -51,7 +52,6 @@ public class Driver {
     public void brakePedal() {
         car.brakePedal();
     }
-
 
 
     public void accelerate() {
@@ -73,14 +73,14 @@ public class Driver {
     public void steerLeft() {
         while (Math.abs(car.getSteerAngle()) < car.getMAXSTEERINGANGLE()) {
             car.steeringWheel(SteerDirection.LEFT);
-        car.move();
+            car.move();
         }
     }
 
     public void steerRight() {
         while (Math.abs(car.getSteerAngle()) < car.getMAXSTEERINGANGLE()) {
             car.steeringWheel(SteerDirection.RIGHT);
-        car.move();
+            car.move();
         }
     }
 
@@ -158,8 +158,8 @@ public class Driver {
 
         long startTime = System.currentTimeMillis();
 
-        while ((startTime - System.currentTimeMillis() < milliSeconds) && !car.checkBumper()) {
-            System.out.println(startTime - System.currentTimeMillis());
+
+        while ((System.currentTimeMillis() - startTime < milliSeconds) && !car.checkBumper()) {
             car.setSteerAngle(-5);
             //steerLeft();
             //accelerate();
@@ -176,6 +176,7 @@ public class Driver {
             car.setSteerAngle(5);
             //steerRight();
             //accelerate();
+
         }
         stop();
         steerMiddle();
@@ -183,21 +184,41 @@ public class Driver {
 
     public void reversing() {
 
-        //calc the angle to wall. Need it to decide which side should I steeringWheel to.
-        float wallAngle = car.getRepresentation().getVector().getDir().getAngle() % 360; //HORRIVEL!
-        //inverse steeringWheel to max
-        car.setSteerAngle(((wallAngle % 90) <= 45 ? -car.getMAXSTEERINGANGLE() : car.getMAXSTEERINGANGLE()));
-        //moveBackwards(10);
-        while (!car.getRepresentation().getVector().isOutsideField()) { //TODO: another way? only works when on the edge
-            moveBackwards();
+        if (!isReversing && car.getRepresentation().isOnEdge()) { //init routine
+            System.out.println("init routine");
+            isReversing = true;
+            stop();
+            float wallAngle = car.getRepresentation().getVector().getDir().getAngle() % 360; //HORRIVEL!
+            //calc the angle to wall. Need it to decide which side should I steeringWheel to.
+            //inverse steeringWheel to max
+            System.out.println(car.getSteerAngle());
+
+            car.setSteerAngle(((wallAngle % 90) <= 45 ? -car.getMAXSTEERINGANGLE() : car.getMAXSTEERINGANGLE()));
+
+            System.out.println(car.getSteerAngle());
+            System.out.println(car.getGearShift());
+            changeShift();
+            System.out.println(car.getGearShift());
+
+
         }
-        steerMiddle();
-        // stop();
-        moveForward();
+
+        if (isReversing) { //the during routine
+            System.out.println("during routine");
+            pressAccelerate();
+        }
+
+        if (car.checkBumper() /*car.getRepresentation().getVector().isOutsideField()*/) { //end routine
+            System.out.println("end routine");
+            steerMiddle();
+            changeShift();
+            pressAccelerate();
+            isReversing = false;
+        }
     }
 
 
-    public void drive()  {
+    public void drive() {
 
         if (car.checkBumper()) {
             //if hits something it starts reversing
@@ -233,12 +254,12 @@ public class Driver {
             switch (turnCounter % 2) {
                 case 0:
 
-                    turnRightTime((int) Math.random());
+                    turnRightTime(1 + ((int) Math.random() * 1));
                     turnCounter++;
                     break;
                 case 1:
 
-                    turnLeftTime((int) Math.random());
+                    turnLeftTime(1 + ((int) Math.random() * 1));
                     turnCounter++;
                     break;
             }

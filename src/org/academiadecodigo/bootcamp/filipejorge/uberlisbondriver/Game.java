@@ -1,6 +1,5 @@
 package org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver;
 
-import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.Car;
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.PlayerCar;
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.drivers.Driver;
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.drivers.PlayerDriver;
@@ -9,7 +8,6 @@ import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.CarType;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardHandler;
 import org.academiadecodigo.simplegraphics.mouse.MouseHandler;
 
-import javax.swing.*;
 
 public class Game {
 
@@ -27,7 +25,7 @@ public class Game {
     public Game(int delay) {
 
         Field.init();
-        this.delay = delay;
+        Game.delay = delay;
     }
 
     /**
@@ -65,7 +63,7 @@ public class Game {
 
 
             // Pause for a while
-            //Thread.sleep(delay);
+            Thread.sleep(delay);
 
             // Move all cars
             for (int i = 0; i < drivers.length; i++) {
@@ -75,7 +73,9 @@ public class Game {
 
                     if (!drivers[i].getCar().isCrashed()) {
                         drivers[i].drive();
-
+                        //drivers[i].getCar().getRepresentation().draw();
+                        //Drivers decide their maneuvers and offer to ManeuversQueue
+                        //TODO: Draw gameObjects ie. the still in movement cars
                         checkCollision(i);
                     }
 

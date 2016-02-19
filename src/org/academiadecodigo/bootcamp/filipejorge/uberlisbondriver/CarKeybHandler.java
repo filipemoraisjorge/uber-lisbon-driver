@@ -69,10 +69,12 @@ public class CarKeybHandler implements KeyboardHandler {
 
         switch (keyboardEvent.getKey()) {
             case 37: { //Left
+                //car.setSteerAngle(-1);
                 car.steeringWheel(SteerDirection.LEFT);
                 break;
             }
             case 39: {//Right
+                //car.setSteerAngle(1);
                 car.steeringWheel(SteerDirection.RIGHT);
                 break;
             }

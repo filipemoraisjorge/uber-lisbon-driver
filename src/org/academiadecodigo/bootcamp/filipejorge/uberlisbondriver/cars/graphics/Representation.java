@@ -127,12 +127,13 @@ public class Representation {
         //this.infoText.translate(xRelative, yRelative);
         //this.infoText.draw();
 
-
+        /*
         try {
             Thread.sleep(Game.delay);
         } catch (InterruptedException ex) {
             System.out.printf("thread interrupted exception");
         }
+        */
     }
 
     private void adjustDirLine(float x, float y) {
