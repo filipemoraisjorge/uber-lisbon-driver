@@ -19,6 +19,9 @@ abstract public class Car {
     private Boolean crashed = false;
 
 
+    private float turnAccumulator; //speed
+
+
     public Car(CarType carType) {
 
         this.carType = carType;
@@ -80,10 +83,29 @@ abstract public class Car {
         this.speed = 0;
         this.steerAngle = 0;
     }
+    private void incTurnAccumulator(int speed) {
+        this.turnAccumulator += (float) speed / Game.MAXIMUM_CARS_SPEED;
+    }
+
+
+    public boolean isTurnToMove(int speed) {
+        /** more speed = move more often
+     * so until the accum doesn't get to 1 the car doesn't move.
+     * the fastest car moves every turn.
+     */
+
+        if (turnAccumulator % (Game.MAXIMUM_CARS_SPEED) < 1) { //if is bellow 1 then it isn't your turn to move
+            this.incTurnAccumulator(speed); //add a little more
+            return false;
+        } else {
+            turnAccumulator = 0; //It's your time to move, lets reset the accumulator.
+            return true;
+        }
+    }
 
     public void move() {
 
-        if (!isCrashed() /*&& !checkBumper()*/) {
+        if (!isCrashed() && isTurnToMove(speed) /*&& !checkBumper()*/) {
             // if not bumping into something, then move
 
             representation.move(speed, steerAngle, gearShift);

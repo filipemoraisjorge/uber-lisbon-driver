@@ -11,7 +11,7 @@ import org.academiadecodigo.simplegraphics.mouse.MouseHandler;
 
 public class Game {
 
-    public static final int MANUFACTURED_CARS = 2;
+    public static final int MANUFACTURED_CARS = 1;
 
     public static final int MAXIMUM_CARS_SPEED = CarType.getAllMaxSpeed();
 
@@ -68,8 +68,7 @@ public class Game {
             // Move all cars
             for (int i = 0; i < drivers.length; i++) {
 
-                if (turnArray[i] % (Game.MAXIMUM_CARS_SPEED) < 1) { //if is bellow 1 then it isn't your turn to move
-                    turnArray[i] += (float) drivers[i].getCar().getSpeed() / Game.MAXIMUM_CARS_SPEED; //add a little more
+
 
                     if (!drivers[i].getCar().isCrashed()) {
                         drivers[i].drive();
@@ -79,9 +78,6 @@ public class Game {
                         checkCollision(i);
                     }
 
-                } else {
-                    turnArray[i] = 0; //It's your time to move, lets reset the accumulator.
-                }
             }
 
         }

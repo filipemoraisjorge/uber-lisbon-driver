@@ -79,7 +79,7 @@ public class CarKeybHandler implements KeyboardHandler {
                 break;
             }
             case 38: { //Up
-                driver.pressAccelerate();
+                car.acceleratePedal();
                 break;
             }
             case 40: { //Down
