@@ -48,10 +48,11 @@ public class PlayerCar extends Car {
 
 
     @Override
-    public void brakePedal() {
+    public void brake() {
         if (getGearShift() == 1 && getSpeed() > 0) {
             setSpeed(getSpeed() - 1);
         }
+
         if ((getGearShift() == -1) && (getSpeed() < getMaxSpeed())) {
             setSpeed(getSpeed() + 1);
         }

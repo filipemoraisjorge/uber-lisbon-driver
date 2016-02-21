@@ -3,6 +3,9 @@ package org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars;
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.Game;
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.graphics.Representation;
 
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
+
 
 abstract public class Car {
 
@@ -83,16 +86,18 @@ abstract public class Car {
         this.speed = 0;
         this.steerAngle = 0;
     }
+
     private void incTurnAccumulator(int speed) {
         this.turnAccumulator += (float) speed / Game.MAXIMUM_CARS_SPEED;
+        // System.out.println(speed + " acc " + turnAccumulator);
     }
 
 
     public boolean isTurnToMove(int speed) {
         /** more speed = move more often
-     * so until the accum doesn't get to 1 the car doesn't move.
-     * the fastest car moves every turn.
-     */
+         * so until the accum doesn't get to 1 the car doesn't move.
+         * the fastest car moves every turn.
+         */
 
         if (turnAccumulator % (Game.MAXIMUM_CARS_SPEED) < 1) { //if is bellow 1 then it isn't your turn to move
             this.incTurnAccumulator(speed); //add a little more
@@ -124,18 +129,23 @@ abstract public class Car {
 
 
     public void acceleratePedal() {
+
         if (speed < this.maxSpeed) {
+
             speed++;
+
         }
     }
 
-    public void brakePedal() {
+    public void brake() {
+
         if (speed > 0) {
             speed--;
         }
     }
 
     public void steeringWheel(SteerDirection steerDirection) {
+
         switch (steerDirection) {
             case LEFT:
                 if (steerAngle > -MAXSTEERINGANGLE) {
@@ -148,12 +158,12 @@ abstract public class Car {
                 }
                 break;
         }
+
     }
 
-    public void inverteShift() {
+    public void invertShift() {
         gearShift = -gearShift;
     }
-
 
 
     public boolean checkCrashed(Car car) {

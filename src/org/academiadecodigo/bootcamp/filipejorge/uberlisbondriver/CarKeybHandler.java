@@ -21,9 +21,9 @@ public class CarKeybHandler implements KeyboardHandler {
     private Keyboard keyboard = new Keyboard(this);
 
 
-    CarKeybHandler(Driver driver) {
-        this.driver = driver;
-        this.car = this.driver.getCar();
+    CarKeybHandler(Car car) {
+        //this.driver = driver;
+        this.car = car;
         init();
 
     }
@@ -61,6 +61,11 @@ public class CarKeybHandler implements KeyboardHandler {
         keyEventRightRelease.setKey(KeyboardEvent.KEY_RIGHT); //40
         keyEventRightRelease.setKeyboardEventType(KeyboardEventType.KEY_RELEASED);
         keyboard.addEventListener(keyEventRightRelease);
+
+        KeyboardEvent keyEventSpace = new KeyboardEvent();
+        keyEventSpace.setKey(KeyboardEvent.KEY_SPACE);
+        keyEventSpace.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        keyboard.addEventListener(keyEventSpace);
     }
 
     @Override
@@ -68,24 +73,28 @@ public class CarKeybHandler implements KeyboardHandler {
 
 
         switch (keyboardEvent.getKey()) {
-            case 37: { //Left
+            case KeyboardEvent.KEY_LEFT: { //Left
                 //car.setSteerAngle(-1);
                 car.steeringWheel(SteerDirection.LEFT);
                 break;
             }
-            case 39: {//Right
+            case KeyboardEvent.KEY_RIGHT: {//Right
                 //car.setSteerAngle(1);
                 car.steeringWheel(SteerDirection.RIGHT);
                 break;
             }
-            case 38: { //Up
+            case KeyboardEvent.KEY_UP: { //Up
                 car.acceleratePedal();
                 break;
             }
-            case 40: { //Down
-                driver.brakePedal();
+            case KeyboardEvent.KEY_DOWN: { //Down
+                car.brake();
                 break;
             }
+
+            case KeyboardEvent.KEY_SPACE:
+
+
         }
 
     }

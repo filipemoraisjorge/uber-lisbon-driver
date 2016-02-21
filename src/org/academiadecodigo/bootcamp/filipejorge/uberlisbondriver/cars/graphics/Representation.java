@@ -1,11 +1,13 @@
 package org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.graphics;
 
-import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.Game;
+import javafx.geometry.Pos;
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.Car;
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.field.Position;
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.field.Vector;
 import org.academiadecodigo.simplegraphics.graphics.*;
 import org.academiadecodigo.simplegraphics.pictures.Picture;
+import org.omg.CORBA.OBJ_ADAPTER;
+import org.omg.CORBA.Object;
 
 /**
  * Created by filipejorge on 12/02/16.
@@ -14,6 +16,7 @@ public class Representation {
 
 
     private Vector vector;
+    private Vector lastVector;
 
     private int width;
     private int height;
@@ -35,9 +38,11 @@ public class Representation {
         this.width = this.picture.getWidth();
         this.height = this.picture.getHeight();
         this.vector = new Vector(width, height);
+        this.lastVector = new Vector(vector);
+
         float x = this.vector.getPos().getX();
         float y = this.vector.getPos().getY();
-        this.picture = UberCarPicture.valueOf(car.getCarType().toString()).getPicture(x,y);
+        this.picture = UberCarPicture.valueOf(car.getCarType().toString()).getPicture(x, y);
 
         //create vector
         //this.vector = new Vector();
@@ -63,6 +68,10 @@ public class Representation {
         //this.draw();
         this.circleDir.fill();
         this.picture.draw();
+        //adjust Direction
+        if (Math.signum(this.vector.getDir().getxDir()) == -1) {
+            this.picture.grow(-width, 0);
+        }
 
     }
 
@@ -73,7 +82,6 @@ public class Representation {
     public void setPicture(Picture picture) {
         this.picture = picture;
     }
-
 
 
     public void setColor(Color color) {
@@ -100,9 +108,12 @@ public class Representation {
     }
 
     public void move(int speed, float angle, int shift) {
-        //if (vector.isTurnToMove(speed)) { //TODO: speed not working!
-            vector.move(speed, angle, shift);
-            this.draw();
+        //save lastVector
+        this.lastVector = new Vector(this.vector);
+        //move vector
+        this.vector.move(speed, angle, shift);
+        //draw representation
+        this.draw();
         //}
     }
 
@@ -110,19 +121,22 @@ public class Representation {
     public void draw() {
 
         //draw shape
-        Position lastPos = this.vector.getLastPos();
+        Position lastPos = this.lastVector.getPos();
         Position pos = this.vector.getPos();
 
         float xRelative = pos.getX() - lastPos.getX();
         float yRelative = pos.getY() - lastPos.getY();
 
-        adjustDirLine(pos.getX(),pos.getY());
+
+        adjustDirLine(pos.getX(), pos.getY());
         //this.dirLine.translate(xRelative, yRelative);
         //this.dirLine.draw();
         this.circleDir.fill();
         //this.rectangle.setColor(this.color);
         //this.rectangle.translate(xRelative, yRelative);
         this.picture.translate(xRelative, yRelative);
+
+        adjustToPictureDirection();
         //this.infoText.setColor(Color.BLACK);
         //this.infoText.translate(xRelative, yRelative);
         //this.infoText.draw();
@@ -134,6 +148,13 @@ public class Representation {
             System.out.printf("thread interrupted exception");
         }
         */
+
+    }
+
+    private void adjustToPictureDirection() {
+        if (Math.signum(this.vector.getDir().getxDir()) != Math.signum(this.lastVector.getDir().getxDir())) {
+            this.picture.grow((Math.signum(this.vector.getDir().getxDir()) * width), 0);
+        }
     }
 
     private void adjustDirLine(float x, float y) {

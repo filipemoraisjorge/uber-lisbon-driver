@@ -9,7 +9,7 @@ public class PlayerDriver extends Driver {
     public PlayerDriver(Car car) {
         super(car);
         super.setDirectionChangeRate(0);
-        super.setDirectionSpeedRate(0);
+        super.setSpeedChangeRate(0);
     }
 
 

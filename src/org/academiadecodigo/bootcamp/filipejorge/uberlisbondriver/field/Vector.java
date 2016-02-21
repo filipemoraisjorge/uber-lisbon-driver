@@ -36,6 +36,14 @@ public class Vector {
         this.lastPos.setPos(this.pos);
     }
 
+    public Vector(Vector vect) {
+        this.pos = new Position(xBoundMin, yBoundMin, xBoundMax, yBoundMax);
+        this.pos.setPos(vect.getPos());
+        this.dir = new Direction(vect.getDir().getxDir(),vect.getDir().getyDir());
+
+
+    }
+
     public void validBoundaries(int xIni, int yIni, int xEnd, int yEnd) {
         xBoundMin = xIni;
         yBoundMin = yIni;
@@ -89,16 +97,13 @@ public class Vector {
     */
 
     public void move(int speed, float steerAngle, int shift) {
-
         //save lastPos
         lastPos.setPos(this.pos);
 
         dir.rotateDir(steerAngle);
 
-
         //move pos towards dir
         pos.setPos(pos.getX() + (shift * dir.getxDir()), pos.getY() + (shift * dir.getyDir()));
-        //}
     }
 
 
