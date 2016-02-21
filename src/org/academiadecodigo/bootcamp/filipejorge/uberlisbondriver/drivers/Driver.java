@@ -185,31 +185,34 @@ public class Driver {
     public void reversing() {
 
         if (!isReversing && car.getRepresentation().isOnEdge()) { //init routine
-           // System.out.println("init routine");
+           System.out.println("init routine");
             isReversing = true;
-            stop();
+            System.out.println("is rev "+isReversing);
+            //stop();
             float wallAngle = car.getRepresentation().getVector().getDir().getAngle() % 360; //HORRIVEL!
             //calc the angle to wall. Need it to decide which side should I steeringWheel to.
             //inverse steeringWheel to max
-           // System.out.println(car.getSteerAngle());
+           System.out.println("angle before " +car.getSteerAngle());
 
             car.setSteerAngle(((wallAngle % 90) <= 45 ? -car.getMAXSTEERINGANGLE() : car.getMAXSTEERINGANGLE()));
 
-           // System.out.println(car.getSteerAngle());
-           // System.out.println(car.getGearShift());
-            changeShift();
-           // System.out.println(car.getGearShift());
+            System.out.println("angle after " +car.getSteerAngle());
+            System.out.println("shift before " + car.getGearShift());
+            car.setGearShift(-1);    //changeShift();
+            System.out.println("shift after " +car.getGearShift());
 
 
         }
 
         if (isReversing) { //the during routine
-           // System.out.println("during routine");
-            pressAccelerate();
+           System.out.println("during routine");
+            car.setSpeed(car.getSpeed()); //pressAccelerate();
+            System.out.println("angle during " +car.getSteerAngle());
+            System.out.println("shift during " + car.getGearShift());
         }
 
-        if (car.checkBumper() /*car.getRepresentation().getVector().isOutsideField()*/) { //end routine
-           // System.out.println("end routine");
+        if (isReversing && car.getRepresentation().getVector().isOutsideField()) { //end routine
+           System.out.println("end routine");
             steerMiddle();
             changeShift();
             pressAccelerate();

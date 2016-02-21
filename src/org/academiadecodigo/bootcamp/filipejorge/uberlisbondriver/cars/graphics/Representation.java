@@ -27,6 +27,7 @@ public class Representation {
     private Ellipse circleDir;
     //private Line dirLine;
     //private Text infoText;
+    //private RectangleF rectangleF;
 
 
     public Representation(Car car) {
@@ -42,15 +43,15 @@ public class Representation {
 
         float x = this.vector.getPos().getX();
         float y = this.vector.getPos().getY();
+        //picture in right position
         this.picture = UberCarPicture.valueOf(car.getCarType().toString()).getPicture(x, y);
+        //my rectangle lines, it rotates!
+        //this.rectangleF = new RectangleF(x, y, width, height);
 
-        //create vector
-        //this.vector = new Vector();
-        //this.width = 20;
-        //this.height = 20;
 
         this.color = car.getCarType().getColor();
         //this.color = new Color((int) (Math.random() * 255), (int) (Math.random() * 255), (int) (Math.random() * 255));
+        //this.rectangleF.setColor(this.color);
 
 
         //this.rectangle = new Rectangle(this.vector.getPos().getX(), this.vector.getPos().getY(), width, height);
@@ -66,8 +67,11 @@ public class Representation {
         //this.dirLine.draw();
         //this.infoText = new Text(this.vector.getPos().getX(), this.vector.getPos().getY(), "");
         //this.draw();
-        this.circleDir.fill();
+
         this.picture.draw();
+        this.circleDir.fill();
+        //this.rectangleF.draw();
+
         //adjust Direction
         if (Math.signum(this.vector.getDir().getxDir()) == -1) {
             this.picture.grow(-width, 0);
@@ -135,8 +139,10 @@ public class Representation {
         //this.rectangle.setColor(this.color);
         //this.rectangle.translate(xRelative, yRelative);
         this.picture.translate(xRelative, yRelative);
-
         adjustToPictureDirection();
+
+        //this.rectangleF.translate(xRelative, yRelative);
+        //this.rectangleF.rotate(this.vector.getDir().getAngle());
         //this.infoText.setColor(Color.BLACK);
         //this.infoText.translate(xRelative, yRelative);
         //this.infoText.draw();

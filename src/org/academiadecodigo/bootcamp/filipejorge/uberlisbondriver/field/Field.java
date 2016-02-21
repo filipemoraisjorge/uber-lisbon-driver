@@ -48,7 +48,6 @@ public final class Field {
 
         //create a background.
         Rectangle background = new Rectangle(MARGIN_LEFT, MARGIN_TOP, offsetX + width, offsetY + height);
-        System.out.println(offsetY + height);
         background.setColor(ColorUber.BLUE.getColor());
         //and a field background
         Rectangle fieldBack = new Rectangle(offsetX, offsetY, width, height);

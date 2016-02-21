@@ -11,7 +11,7 @@ import org.academiadecodigo.simplegraphics.mouse.MouseHandler;
 
 public class Game {
 
-    public static final int MANUFACTURED_CARS = 1;
+    public static final int MANUFACTURED_CARS = 5;
 
     public static final int MAXIMUM_CARS_SPEED = CarType.getAllMaxSpeed();
 
@@ -36,7 +36,6 @@ public class Game {
         drivers = new Driver[MANUFACTURED_CARS];
 
         Driver player = new PlayerDriver(new PlayerCar(CarType.UBERX));
-        System.out.println(player.getCar());
         KeyboardHandler carControlHandler = new CarKeybHandler(player.getCar());
         MouseHandler carMouseHandler = new CarMouseHandler(player);
         drivers[0] = player;
