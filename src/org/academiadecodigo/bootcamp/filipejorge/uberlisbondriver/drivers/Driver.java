@@ -58,7 +58,7 @@ public class Driver {
         while (car.getSpeed() < car.getMaxSpeed()) {
             car.acceleratePedal();
         }
-       // car.move();
+        // car.move();
 
     }
 
@@ -66,7 +66,7 @@ public class Driver {
         while (car.getSpeed() > 0) {
             car.brake();
         }
-       // car.move();
+        // car.move();
 
     }
 
@@ -80,7 +80,7 @@ public class Driver {
     public void steerRight() {
         while (Math.abs(car.getSteerAngle()) < car.getMAXSTEERINGANGLE()) {
             car.steeringWheel(SteerDirection.RIGHT);
- //           car.move();
+            //           car.move();
         }
     }
 
@@ -88,10 +88,10 @@ public class Driver {
         while (Math.abs(car.getSteerAngle()) != 0) {
             if (car.getSteerAngle() > 0) {
                 car.steeringWheel(SteerDirection.LEFT);
-   //             car.move();
+                //             car.move();
             } else {
                 car.steeringWheel(SteerDirection.RIGHT);
-     //           car.move();
+                //           car.move();
             }
         }
 
@@ -185,34 +185,19 @@ public class Driver {
     public void reversing() {
 
         if (!isReversing && car.getRepresentation().isOnEdge()) { //init routine
-           System.out.println("init routine");
             isReversing = true;
-            System.out.println("is rev "+isReversing);
-            //stop();
             float wallAngle = car.getRepresentation().getVector().getDir().getAngle() % 360; //HORRIVEL!
             //calc the angle to wall. Need it to decide which side should I steeringWheel to.
             //inverse steeringWheel to max
-           System.out.println("angle before " +car.getSteerAngle());
-
             car.setSteerAngle(((wallAngle % 90) <= 45 ? -car.getMAXSTEERINGANGLE() : car.getMAXSTEERINGANGLE()));
-
-            System.out.println("angle after " +car.getSteerAngle());
-            System.out.println("shift before " + car.getGearShift());
             car.setGearShift(-1);    //changeShift();
-            System.out.println("shift after " +car.getGearShift());
-
-
         }
 
         if (isReversing) { //the during routine
-           System.out.println("during routine");
-            car.setSpeed(car.getSpeed()); //pressAccelerate();
-            System.out.println("angle during " +car.getSteerAngle());
-            System.out.println("shift during " + car.getGearShift());
+            car.setSpeed(car.getSpeed());
         }
 
         if (isReversing && car.getRepresentation().getVector().isOutsideField()) { //end routine
-           System.out.println("end routine");
             steerMiddle();
             changeShift();
             pressAccelerate();
@@ -252,7 +237,7 @@ public class Driver {
 
 
     public void decideChangeDirection() {
-
+//TODO:not working..
         double random = (Math.random() * 100);
         if (random < directionChangeRate) {
             switch (turnCounter % 2) {

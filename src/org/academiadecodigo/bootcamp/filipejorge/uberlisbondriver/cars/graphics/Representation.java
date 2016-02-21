@@ -1,19 +1,20 @@
 package org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.graphics;
 
-import javafx.geometry.Pos;
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.Car;
+import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.graphics.extendsSimpleGraphic.PictureF;
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.field.Position;
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.field.Vector;
 import org.academiadecodigo.simplegraphics.graphics.*;
 import org.academiadecodigo.simplegraphics.pictures.Picture;
-import org.omg.CORBA.OBJ_ADAPTER;
-import org.omg.CORBA.Object;
+
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 
 /**
  * Created by filipejorge on 12/02/16.
  */
 public class Representation {
-
+//TODO: change to interface
 
     private Vector vector;
     private Vector lastVector;
@@ -23,6 +24,7 @@ public class Representation {
     private Color color;
 
     private Picture picture;
+    private  int[][] hitBox;
     //private Rectangle rectangle;
     private Ellipse circleDir;
     //private Line dirLine;
@@ -45,9 +47,10 @@ public class Representation {
         float y = this.vector.getPos().getY();
         //picture in right position
         this.picture = UberCarPicture.valueOf(car.getCarType().toString()).getPicture(x, y);
+        this.hitBox = UberCarPicture.valueOf(car.getCarType().toString()).getHitbox();
+
         //my rectangle lines, it rotates!
         //this.rectangleF = new RectangleF(x, y, width, height);
-
 
         this.color = car.getCarType().getColor();
         //this.color = new Color((int) (Math.random() * 255), (int) (Math.random() * 255), (int) (Math.random() * 255));
@@ -187,7 +190,6 @@ public class Representation {
     }
 
     public boolean collide(Representation another) {
-        //TODO: Different forms
 
         Position thisPos = vector.getPos();
         Position anotherPos = another.vector.getPos();
@@ -198,8 +200,28 @@ public class Representation {
         float anotherX = anotherPos.getX();
         float anotherY = anotherPos.getY();
 
-        return ((Math.abs(thisX - anotherX) < width) && (Math.abs(thisY - anotherY) < height));
+        //usign pictures hitbox;
+        if ((this.getPicture() != null)||(another.getPicture() != null)) {
+            //TODO: seems to work but should do more tests
+            int thisHitX = hitBox[0][0];
+            int thisHitY = hitBox[0][1];
+            int thisHitW = hitBox[1][0];
+            int thisHitH = hitBox[1][1];
+
+            int anotherHitX = another.hitBox[0][0];
+            int anotherHitY = another.hitBox[0][1];
+            int anotherHitW = another.hitBox[1][0];
+            int anotherHitH = another.hitBox[1][1];
+
+            return ((Math.abs(thisX + thisHitX - anotherX + anotherHitX) < thisHitW) && (Math.abs(thisY + thisHitY - anotherY + anotherHitY) < thisHitH));
+
+        } else {
+            //Rectangles
+            //TODO: Different forms
+            return ((Math.abs(thisX - anotherX) < width) && (Math.abs(thisY - anotherY) < height));
+        }
     }
+
 
     @Override
     public String toString() {

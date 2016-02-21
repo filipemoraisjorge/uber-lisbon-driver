@@ -1,4 +1,4 @@
-package org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.graphics;
+package org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.graphics.extendsSimpleGraphic;
 
 import org.academiadecodigo.simplegraphics.graphics.Color;
 import org.academiadecodigo.simplegraphics.graphics.Line;
