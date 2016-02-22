@@ -1,36 +1,41 @@
 package org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.graphics;
 
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.Car;
+import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.PlayerCar;
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.graphics.extendsSimpleGraphic.PictureF;
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.field.Position;
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.field.Vector;
 import org.academiadecodigo.simplegraphics.graphics.*;
 import org.academiadecodigo.simplegraphics.pictures.Picture;
 
-import java.io.FileNotFoundException;
-import java.io.PrintStream;
-
 /**
  * Created by filipejorge on 12/02/16.
  */
 public class Representation {
-//TODO: change to interface
+//TODO: change to interface, representable applied to all the gameobjects
 
+    boolean inRoute;
     private Vector vector;
     private Vector lastVector;
-
     private int width;
     private int height;
     private Color color;
-
     private Picture picture;
-    private  int[][] hitBox;
-    //private Rectangle rectangle;
-    private Ellipse circleDir;
+    private int[][] hitBox;
+    private PictureF pictureF;
     //private Line dirLine;
     //private Text infoText;
     //private RectangleF rectangleF;
+    //private Rectangle rectangle;
+    private Ellipse circleDir;
 
+    public Representation(int w, int h) {
+
+        this.width = w;
+        this.height = h;
+        this.vector = new Vector(width, height);
+
+    }
 
     public Representation(Car car) {
 
@@ -49,6 +54,10 @@ public class Representation {
         this.picture = UberCarPicture.valueOf(car.getCarType().toString()).getPicture(x, y);
         this.hitBox = UberCarPicture.valueOf(car.getCarType().toString()).getHitbox();
 
+        //test rotate
+        double angle = Math.toRadians(this.vector.getDir().getAngle());
+        this.pictureF = UberCarPicture.valueOf(car.getCarType().toString()).getPictureF(x, y,angle) ;
+
         //my rectangle lines, it rotates!
         //this.rectangleF = new RectangleF(x, y, width, height);
 
@@ -56,24 +65,17 @@ public class Representation {
         //this.color = new Color((int) (Math.random() * 255), (int) (Math.random() * 255), (int) (Math.random() * 255));
         //this.rectangleF.setColor(this.color);
 
+        if (car instanceof PlayerCar) {
 
-        //this.rectangle = new Rectangle(this.vector.getPos().getX(), this.vector.getPos().getY(), width, height);
-        //this.rectangle.setColor(this.color);
-        //this.rectangle.fill();
+            float xCenter = x + (width / 2);
+            float yCenter = y + (height / 2);
+            this.circleDir = new Ellipse(xCenter, yCenter, 3, 3); //start position marker
+            this.circleDir.setColor(this.color);
 
-        float xCenter = x + (width / 2);
-        float yCenter = y + (height / 2);
-        this.circleDir = new Ellipse(xCenter, yCenter, 15, 15); //start position marker
-        this.circleDir.setColor(this.color);
+        }
 
-        //this.dirLine = new Line(xCenter, yCenter, this.rectangle.getX(), this.rectangle.getY());
-        //this.dirLine.draw();
-        //this.infoText = new Text(this.vector.getPos().getX(), this.vector.getPos().getY(), "");
-        //this.draw();
-
-        this.picture.draw();
-        this.circleDir.fill();
-        //this.rectangleF.draw();
+        //this.picture.draw();
+        this.pictureF.draw();
 
         //adjust Direction
         if (Math.signum(this.vector.getDir().getxDir()) == -1) {
@@ -86,11 +88,6 @@ public class Representation {
         return picture;
     }
 
-    public void setPicture(Picture picture) {
-        this.picture = picture;
-    }
-
-
     public void setColor(Color color) {
         this.color = color;
     }
@@ -99,8 +96,12 @@ public class Representation {
         return vector;
     }
 
-    public void setInfoText(String infoText) {
-        //this.infoText = new Text(this.vector.getPos().getX(), this.vector.getPos().getY(), infoText);
+    public boolean isInRoute() {
+        return inRoute;
+    }
+
+    public void setInRoute(boolean inRoute) {
+        this.inRoute = inRoute;
     }
 
     public void setCrashed() {
@@ -134,15 +135,20 @@ public class Representation {
         float xRelative = pos.getX() - lastPos.getX();
         float yRelative = pos.getY() - lastPos.getY();
 
+        if (inRoute) {
+            adjustDirLine(pos.getX(), pos.getY());
+            //this.dirLine.translate(xRelative, yRelative);
+            //this.dirLine.draw();
+            this.circleDir.fill();
+            //this.rectangle.setColor(this.color);
+            //this.rectangle.translate(xRelative, yRelative);
+        }
 
-        adjustDirLine(pos.getX(), pos.getY());
-        //this.dirLine.translate(xRelative, yRelative);
-        //this.dirLine.draw();
-        this.circleDir.fill();
-        //this.rectangle.setColor(this.color);
-        //this.rectangle.translate(xRelative, yRelative);
-        this.picture.translate(xRelative, yRelative);
-        adjustToPictureDirection();
+        //this.picture.translate(xRelative, yRelative);
+        //adjustToPictureDirection();
+        this.pictureF.translate(xRelative, yRelative);
+        double angle = Math.toRadians(this.vector.getDir().getAngle());
+        this.pictureF.setAngle(angle);
 
         //this.rectangleF.translate(xRelative, yRelative);
         //this.rectangleF.rotate(this.vector.getDir().getAngle());
@@ -161,9 +167,17 @@ public class Representation {
     }
 
     private void adjustToPictureDirection() {
-        if (Math.signum(this.vector.getDir().getxDir()) != Math.signum(this.lastVector.getDir().getxDir())) {
-            this.picture.grow((Math.signum(this.vector.getDir().getxDir()) * width), 0);
+
+        float angle = this.getVector().getDir().getAngle();
+        System.out.println(Math.abs(angle % 360));
+        if (angle > 180 && angle < 270) {
+            this.picture.grow(-width, 0);
         }
+/*        double actualSignum = Math.signum(this.vector.getDir().getxDir());
+       double lastSignum = Math.signum(this.lastVector.getDir().getxDir());
+        if (actualSignum != lastSignum) {
+            this.picture.grow(actualSignum * width, 0);
+        }*/
     }
 
     private void adjustDirLine(float x, float y) {
@@ -201,20 +215,20 @@ public class Representation {
         float anotherY = anotherPos.getY();
 
         //usign pictures hitbox;
-        if ((this.getPicture() != null)||(another.getPicture() != null)) {
+        if ((this.getPicture() != null) && (another.getPicture() != null)) {
             //TODO: seems to work but should do more tests
             int thisHitX = hitBox[0][0];
             int thisHitY = hitBox[0][1];
-            int thisHitW = hitBox[1][0];
-            int thisHitH = hitBox[1][1];
+            int thisHitWidth = hitBox[1][0];
+            int thisHitHeight = hitBox[1][1];
 
             int anotherHitX = another.hitBox[0][0];
             int anotherHitY = another.hitBox[0][1];
             int anotherHitW = another.hitBox[1][0];
             int anotherHitH = another.hitBox[1][1];
 
-            return ((Math.abs(thisX + thisHitX - anotherX + anotherHitX) < thisHitW) && (Math.abs(thisY + thisHitY - anotherY + anotherHitY) < thisHitH));
-
+            return ((Math.abs(thisX + thisHitX - anotherX + anotherHitX) < thisHitWidth - thisHitX)
+                    && (Math.abs(thisY + thisHitY - anotherY + anotherHitY) < thisHitHeight - thisHitY));
         } else {
             //Rectangles
             //TODO: Different forms

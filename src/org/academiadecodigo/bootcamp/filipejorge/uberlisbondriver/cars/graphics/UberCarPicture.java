@@ -37,8 +37,8 @@ public enum UberCarPicture {
         return picture;
     }
 
-    public PictureF getPictureF(float x, float y) {
-        this.pictureF = new PictureF(x, y, file);
+    public PictureF getPictureF(float x, float y, double angle) {
+        this.pictureF = new PictureF(x, y, angle, file);
         return pictureF;
     }
 

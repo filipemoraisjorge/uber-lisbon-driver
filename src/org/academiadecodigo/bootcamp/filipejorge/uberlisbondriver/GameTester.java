@@ -1,42 +1,37 @@
 package org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver;
 
-import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.Car;
+import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.CarType;
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.PlayerCar;
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.drivers.Driver;
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.drivers.PlayerDriver;
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.field.Field;
-import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.CarType;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardHandler;
 import org.academiadecodigo.simplegraphics.mouse.MouseHandler;
 
 
-public class Game {
+public class GameTester {
 
-    public static final int MANUFACTURED_CARS = 5;
+    public static final int MANUFACTURED_CARS = 20;
 
     public static final int MAXIMUM_CARS_SPEED = CarType.getAllMaxSpeed();
+
     /**
      * Animation delay
      */
     public static int delay;
     Driver[] drivers;
-    private GameMarker startMarker;
-    private GameMarker endMarker;
 
 
-    public Game(int delay) {
+    public GameTester(int delay) {
 
         Field.init();
-        Game.delay = delay;
+        GameTester.delay = delay;
     }
 
     /**
      * Creates a bunch of cars and randomly puts them in the field
      */
     public void init() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-
-        startMarker = new GameMarker(GameMarker.MarkerType.START, 15);
-        endMarker = new GameMarker(GameMarker.MarkerType.END, 15);
 
         drivers = new Driver[MANUFACTURED_CARS];
 
@@ -48,10 +43,9 @@ public class Game {
         for (int i = 1 + drivers.length - MANUFACTURED_CARS; i < drivers.length; i++) {
             //driver has a car
 
-            drivers[i] = new Driver(CarFactory.getNewCarbyType(CarType.TAXI));
+            drivers[i] = new Driver(CarFactory.getNewCar());
 
         }
-
     }
 
     /**
@@ -60,6 +54,9 @@ public class Game {
      * @throws InterruptedException
      */
     public void start() throws InterruptedException {
+
+
+        float[] turnArray = new float[drivers.length];
 
 
         while (true) {
@@ -75,23 +72,13 @@ public class Game {
 
                     if (!drivers[i].getCar().isCrashed()) {
                         drivers[i].drive();
-
+                        //drivers[i].getCar().getRepresentation().draw();
+                        //Drivers decide their maneuvers and offer to ManeuversQueue
+                        //TODO: Draw gameObjects ie. the still in movement cars
                         checkCollision(i);
                     }
 
             }
-
-            Car playerCar = drivers[0].getCar();
-
-            if(startMarker.isReached(playerCar)) {
-                playerCar.getRepresentation().setInRoute(true);
-                System.out.println("start");
-            }
-            if(endMarker.isReached(drivers[0].getCar())) {
-                playerCar.getRepresentation().setInRoute(false);
-                System.out.println("end");
-            }
-
 
         }
     }

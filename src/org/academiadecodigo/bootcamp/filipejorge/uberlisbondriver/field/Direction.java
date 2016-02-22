@@ -49,6 +49,10 @@ public class Direction {
         this.yDir = (float) Math.sin(angleRad);
     }
 
+    public static Direction getRandomDir() {
+        return new Direction(RandomF.getRandomFloat(-1, 1), RandomF.getRandomFloat(-1, 1));
+    }
+
     public float getxDir() {
         return xDir;
     }
@@ -57,16 +61,15 @@ public class Direction {
         return yDir;
     }
 
-    public float getAngleRad() {
-        return angleRad;
-    }
-
     public float getAngle() {
         return angle;
     }
 
-    public static Direction getRandomDir() {
-        return new Direction(RandomF.getRandomFloat(-1, 1), RandomF.getRandomFloat(-1, 1));
+    public void setAngle(float angle) {
+        this.angle = angle;
+        this.angleRad = (float) Math.toRadians(angle);
+        this.xDir = (float) Math.cos(angleRad);
+        this.yDir = (float) Math.sin(angleRad);
     }
 
     public void setDirection(float xDir, float yDir) {

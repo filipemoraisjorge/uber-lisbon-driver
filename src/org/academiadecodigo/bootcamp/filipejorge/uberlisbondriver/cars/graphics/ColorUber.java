@@ -10,6 +10,7 @@ public enum ColorUber {
     GREEN(new Color(137, 218, 193)),
     DARKGREEN(new Color(38, 126, 99)),
     VIVIDGREEN(new Color(77, 193, 156)),
+    RED(new Color(205,82,41)),
     BLACK(Color.BLACK);
 
     private Color color;

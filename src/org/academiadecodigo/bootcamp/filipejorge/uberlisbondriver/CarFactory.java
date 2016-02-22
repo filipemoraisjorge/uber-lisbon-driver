@@ -26,4 +26,14 @@ public class CarFactory {
         return car;
 
     }
+
+    public static Car getNewCarbyType(CarType type) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        Car car = null;
+        Class carType = type.getCarClass();
+        String carTypeName = carType.getName();
+
+        car = (Car) Class.forName(carTypeName).newInstance();
+
+        return car;
+    }
 }
