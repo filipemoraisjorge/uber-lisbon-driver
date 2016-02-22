@@ -33,8 +33,9 @@ public class PlayerCar extends Car {
     }
 
 
-    @Override
+/*    @Override
     public void acceleratePedal() {
+
         if (getGearShift() == -1 && getSpeed() > 0) {
             setSpeed(getSpeed() - 1);
         }
@@ -59,7 +60,7 @@ public class PlayerCar extends Car {
         if (getSpeed() == 0) {
             setGearShift(-1);
         }
-    }
+    }*/
 
 
 }

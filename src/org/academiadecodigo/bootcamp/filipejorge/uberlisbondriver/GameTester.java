@@ -36,7 +36,7 @@ public class GameTester {
         drivers = new Driver[MANUFACTURED_CARS];
 
         Driver player = new PlayerDriver(new PlayerCar(CarType.UBERX));
-        KeyboardHandler carControlHandler = new CarKeybHandler(player.getCar());
+        KeyboardHandler carControlHandler = new CarKeybHandler(player);
         MouseHandler carMouseHandler = new CarMouseHandler(player);
         drivers[0] = player;
 

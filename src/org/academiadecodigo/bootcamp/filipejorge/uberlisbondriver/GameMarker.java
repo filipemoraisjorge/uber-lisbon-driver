@@ -12,7 +12,6 @@ import org.academiadecodigo.simplegraphics.graphics.Ellipse;
  */
 public class GameMarker extends Representation {
 
-    private Vector vector;
     private Ellipse marker;
     private MarkerType type;
     private int size = 15;
@@ -20,7 +19,6 @@ public class GameMarker extends Representation {
     public GameMarker(MarkerType type, int size) {
         super(size, size);
         this.size = size;
-        //vector = new Vector(size, size);
         Position pos = super.getVector().getPos();
         float x = pos.getX();
         float y = pos.getY();
@@ -39,6 +37,12 @@ public class GameMarker extends Representation {
     public void delete() {
         marker.delete();
         //marker = null;
+    }
+
+    public int distance(GameMarker another) {
+        double x = this.getVector().getPos().getX() - another.getVector().getPos().getX();
+        double y = this.getVector().getPos().getY() - another.getVector().getPos().getY();
+        return (int) Math.hypot(x, y);
     }
 
     public boolean isReached(Car car) {

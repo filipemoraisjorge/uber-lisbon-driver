@@ -20,6 +20,7 @@ public class Driver {
     private int turnCounter;
 
     private boolean isReversing;
+    private boolean accelerate;
 
     public Driver(Car car) {
         this.car = car;
@@ -39,18 +40,31 @@ public class Driver {
         this.speedChangeRate = speedChangeRate;
     }
 
-    //basic operations, with car.move()(refresh animation) in it
+    public boolean isAccelerate() {
+        return accelerate;
+    }
+
+    public void setAccelerate(boolean accelerate) {
+        this.accelerate = accelerate;
+    }
 
     public void changeShift() {
         car.invertShift();
     }
 
     public void pressAccelerate() {
-        car.acceleratePedal();
+
+        if (isAccelerate()) {
+            car.acceleratePedal();
+        }
     }
 
     public void brakePedal() {
-        car.brake();
+
+        if (!isAccelerate()) {
+
+            car.brake();
+        }
     }
 
 
@@ -227,10 +241,10 @@ public class Driver {
         if (random < speedChangeRate) {
             switch ((int) Math.random()) {
                 case 0:
-                    car.acceleratePedal();
+                    pressAccelerate();
                     break;
                 default:
-                    car.brake();
+                    brakePedal();
             }
         }
     }

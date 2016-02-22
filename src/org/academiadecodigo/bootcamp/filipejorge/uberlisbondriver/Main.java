@@ -14,7 +14,7 @@ public class Main {
 
 
         //Game
-        Game g = new Game(2);
+        Game g = new Game(1);
         g.splashScreen();
         //g.init(); // Creates a bunch of cars and randomly puts them in the field
         //g.start(); // Starts the car crash animation

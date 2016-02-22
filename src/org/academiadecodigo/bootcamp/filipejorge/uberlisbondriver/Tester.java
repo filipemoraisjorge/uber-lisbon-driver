@@ -23,7 +23,7 @@ public class Tester {
 
     public static void start() throws InterruptedException {
         Driver driver = new PlayerDriver(new PlayerCar(CarType.UBERX));
-        KeyboardHandler carControlHandler = new CarKeybHandler(driver.getCar());
+        KeyboardHandler carControlHandler = new CarKeybHandler(driver);
         MouseHandler carMouseHandler = new CarMouseHandler(driver);
 
         Game.delay = 20;

@@ -19,7 +19,7 @@ import org.academiadecodigo.simplegraphics.pictures.Picture;
 
 public class Game {
 
-    public static final int MANUFACTURED_CARS = 5;
+    public static final int MANUFACTURED_CARS = 6;
 
     public static final int MAXIMUM_CARS_SPEED = CarType.getAllMaxSpeed();
 
@@ -28,18 +28,21 @@ public class Game {
      * Animation delay
      */
     public static int delay;
-
     private final int MAXLIVES = 5;
     Picture[] livesPictures = new Picture[MAXLIVES];
     boolean loseLive = false;
     long loseLiveTime;
     boolean inGameRoute = false;
-    private int lives = MAXLIVES;
+    int totalScore;
+    long routeStartTime;
+    int routeMaxScore;
+    Text scoreDraw;
     private Driver[] drivers;
     private GameMarker startMarker;
     private GameMarker endMarker;
-    private boolean dead;
+    private int lives = MAXLIVES;
     private boolean inLoseLiveTime;
+    private boolean dead;
     private boolean spacePressed = false;
 
 
@@ -118,7 +121,7 @@ public class Game {
         drivers = new Driver[MANUFACTURED_CARS];
 
         Driver player = new PlayerDriver(new PlayerCar(CarType.UBERX));
-        KeyboardHandler carControlHandler = new CarKeybHandler(player.getCar());
+        KeyboardHandler carControlHandler = new CarKeybHandler(player);
         MouseHandler carMouseHandler = new CarMouseHandler(player);
         drivers[0] = player;
 
@@ -140,28 +143,14 @@ public class Game {
         //show lives
         initDrawLives();
 
+        //init scoreDraw
+        scoreDraw = new Text(100, 243, "Score " + totalScore);
+        scoreDraw.setColor(ColorUber.GREEN.getColor());
+        scoreDraw.draw();
+
         //start game cycle
         start();
 
-    }
-
-    private void initDrawLives() {
-        for (int i = 0; i < MAXLIVES; i++) {
-
-            System.out.println("inside " + livesPictures[i] + " " + i);
-            livesPictures[i] = new Picture(65, 287, "resources/uber-lives.png");
-            livesPictures[i].translate((livesPictures[i].getWidth() * i) + (i * 5), 0);
-            livesPictures[i].draw();
-        }
-    }
-
-    private void drawLives() {
-        for (int i = 0; i < lives + 1; i++) {
-            livesPictures[i].delete();
-        }
-        for (int i = 0; i < lives; i++) {
-            livesPictures[i].draw();
-        }
     }
 
     /**
@@ -199,13 +188,33 @@ public class Game {
             //TODO Score, quicker = more points.
             //TODO Show inProtected Time.
             //TODO Taxis drivers Shouts
-            //TODO Start Screen with instructions
             //TODO Drivers view?
 
 
         }
 
     }
+
+    private void initDrawLives() {
+        Text livesInfo = new Text(50, 283, "Lives ");
+        livesInfo.setColor(ColorUber.BLUE.getColor());
+        livesInfo.draw();
+        for (int i = 0; i < MAXLIVES; i++) {
+            livesPictures[i] = new Picture(90, 287, "resources/uber-lives.png");
+            livesPictures[i].translate((livesPictures[i].getWidth() * i) + (i * 5), 0);
+            livesPictures[i].draw();
+        }
+    }
+
+    private void drawLives() {
+        for (int i = 0; i < lives + 1; i++) {
+            livesPictures[i].delete();
+        }
+        for (int i = 0; i < lives; i++) {
+            livesPictures[i].draw();
+        }
+    }
+
 
     private void checkLives() {
         if (loseLive && !inLoseLiveTime) {
@@ -226,23 +235,33 @@ public class Game {
     }
 
     private void MarkersRoutine(Car playerCar) {
-
+        //Reached Start Marker
         if (startMarker != null && startMarker.isReached(playerCar)) {
             playerCar.getRepresentation().setInRoute(true);
             inGameRoute = true;
+
         }
-        //if don't exits yet, it creates
+        //If StartMarker don't exits yet, is created
         if (!inGameRoute && startMarker == null) {
-            //new start
             startMarker = new GameMarker(GameMarker.MarkerType.START, 30);
         }
-        //if do not exits yet, creates
+        //If EndMarker do not exits yet, is created
         if (inGameRoute && endMarker == null) {
             endMarker = new GameMarker(GameMarker.MarkerType.END, 30);
+            routeMaxScore = startMarker.distance(endMarker);
+            routeStartTime = System.currentTimeMillis();
+
         }
 
-        //if exists, test if reached
+        //If EndMarker exists, test if is reached
         if (endMarker != null && endMarker.isReached(playerCar)) {
+
+            //TODO: CALC score and and to TOTALSCORE
+            int score = (int) Math.abs(routeMaxScore / ((routeStartTime - System.currentTimeMillis()) / 1000));
+            totalScore += score;
+            scoreDraw.setText("Score " + totalScore);
+            System.out.println(totalScore + " " + score + " " + routeMaxScore + " " + (routeStartTime - System.currentTimeMillis()));
+
             startMarker.delete();
             endMarker.delete();
             startMarker = null;

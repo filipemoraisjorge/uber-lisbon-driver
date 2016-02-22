@@ -21,9 +21,9 @@ public class CarKeybHandler implements KeyboardHandler {
     private Keyboard keyboard = new Keyboard(this);
 
 
-    CarKeybHandler(Car car) {
-        //this.driver = driver;
-        this.car = car;
+    CarKeybHandler(Driver driver) {
+        this.driver = driver;
+        this.car = driver.getCar();
         init();
 
     }
@@ -65,6 +65,11 @@ public class CarKeybHandler implements KeyboardHandler {
         keyEventRightRelease.setKeyboardEventType(KeyboardEventType.KEY_RELEASED);
         keyboard.addEventListener(keyEventRightRelease);
 
+        KeyboardEvent keyEventSpace = new KeyboardEvent();
+        keyEventSpace.setKey(KeyboardEvent.KEY_SPACE);
+        keyEventSpace.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        keyboard.addEventListener(keyEventSpace);
+
  /*       keyEventLeftRelease.setKey(KeyboardEvent.KEY_UP);
         keyEventLeftRelease.setKeyboardEventType(KeyboardEventType.KEY_RELEASED);
         keyboard.addEventListener(keyEventUpRelease);
@@ -83,22 +88,31 @@ public class CarKeybHandler implements KeyboardHandler {
             case KeyboardEvent.KEY_LEFT: { //Left
                 //car.setSteerAngle(-1);
                 car.steeringWheel(SteerDirection.LEFT);
+                System.out.println("l");
                 break;
             }
             case KeyboardEvent.KEY_RIGHT: {//Right
                 //car.setSteerAngle(1);
                 car.steeringWheel(SteerDirection.RIGHT);
+                System.out.println("r");
                 break;
             }
             case KeyboardEvent.KEY_UP: { //Up
+                car.setAcc(true);
                 car.acceleratePedal();
+                System.out.println("u");
                 break;
             }
             case KeyboardEvent.KEY_DOWN: { //Down
-                car.brake();
+                car.setAcc(false);
+                car.deacceleratePedal();
+                System.out.println("d");
                 break;
             }
-
+            case KeyboardEvent.KEY_SPACE: { //Down
+                car.handBrake();
+                break;
+            }
 
         }
 
@@ -120,8 +134,8 @@ public class CarKeybHandler implements KeyboardHandler {
             }
 
             case KeyboardEvent.KEY_UP: { //Left
-                //car.setSpeed(0);
-                //driver.steerMiddle();
+                car.setAcc(false);
+                car.deacceleratePedal();
                 break;
             }
             case KeyboardEvent.KEY_DOWN: {//Right

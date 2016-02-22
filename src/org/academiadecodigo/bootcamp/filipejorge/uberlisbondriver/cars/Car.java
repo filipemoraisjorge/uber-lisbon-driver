@@ -20,7 +20,7 @@ abstract public class Car {
     private int gearShift; //-1 reverse; 0 Neutral; 1 Forward.
     private int maxSpeed;
     private Boolean crashed = false;
-
+    private boolean acc;
 
     private float turnAccumulator; //speed
 
@@ -76,6 +76,14 @@ abstract public class Car {
         return maxSpeed;
     }
 
+    public boolean isAcc() {
+        return acc;
+    }
+
+    public void setAcc(boolean acc) {
+        this.acc = acc;
+    }
+
     public boolean isCrashed() {
         return this.crashed;
     }
@@ -86,6 +94,7 @@ abstract public class Car {
         this.speed = 0;
         this.steerAngle = 0;
     }
+
 
     private void incTurnAccumulator(int speed) {
         this.turnAccumulator += (float) speed / Game.MAXIMUM_CARS_SPEED;
@@ -129,19 +138,35 @@ abstract public class Car {
 
 
     public void acceleratePedal() {
-
-        if (speed < this.maxSpeed) {
-
-            speed++;
-
+        if (acc) {
+            if (speed <= this.maxSpeed) {
+                speed++;
+            }
         }
     }
+
+    public void deacceleratePedal() {
+        if (!acc) {
+
+            if (speed > 0) {
+                speed--;
+            }
+        }
+    }
+
 
     public void brake() {
 
         if (speed > 0) {
             speed--;
         }
+    }
+
+
+    public void handBrake() {
+
+        setSpeed(0);
+
     }
 
     public void steeringWheel(SteerDirection steerDirection) {
