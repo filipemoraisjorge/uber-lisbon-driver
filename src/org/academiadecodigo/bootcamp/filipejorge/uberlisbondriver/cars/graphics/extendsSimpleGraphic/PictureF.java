@@ -223,7 +223,6 @@ public class PictureF implements org.academiadecodigo.simplegraphics.graphics.Sh
 
                 g.scale(((double) this.image.getWidth() + 2.0D * this.xGrow) / (double) dim.width, ((double) this.image.getHeight() + 2.0D * this.yGrow) / (double) dim.height);
                 this.label.paint(g);
-                System.out.println("paintShape");
             }
         }
 

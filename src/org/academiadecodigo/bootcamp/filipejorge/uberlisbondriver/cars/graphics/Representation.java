@@ -20,13 +20,9 @@ public class Representation {
     private int width;
     private int height;
     private Color color;
-    private Picture picture;
+   // private Picture picture;
     private int[][] hitBox;
     private PictureF pictureF;
-    //private Line dirLine;
-    //private Text infoText;
-    //private RectangleF rectangleF;
-    //private Rectangle rectangle;
     private Ellipse circleDir;
 
     public Representation(int w, int h) {
@@ -40,30 +36,22 @@ public class Representation {
     public Representation(Car car) {
 
         //temp picture to get width and height. It's a sign that something is no well structured...
-        this.picture = UberCarPicture.valueOf(car.getCarType().toString()).getPicture(0, 0);
+        this.pictureF = UberCarPicture.valueOf(car.getCarType().toString()).getPictureF(0, 0,0);
 
 
-        this.width = this.picture.getWidth();
-        this.height = this.picture.getHeight();
+        this.width = this.pictureF.getWidth();
+        this.height = this.pictureF.getHeight();
         this.vector = new Vector(width, height);
         this.lastVector = new Vector(vector);
 
         float x = this.vector.getPos().getX();
         float y = this.vector.getPos().getY();
         //picture in right position
-        this.picture = UberCarPicture.valueOf(car.getCarType().toString()).getPicture(x, y);
-        this.hitBox = UberCarPicture.valueOf(car.getCarType().toString()).getHitbox();
-
-        //test rotate
         double angle = Math.toRadians(this.vector.getDir().getAngle());
         this.pictureF = UberCarPicture.valueOf(car.getCarType().toString()).getPictureF(x, y,angle) ;
-
-        //my rectangle lines, it rotates!
-        //this.rectangleF = new RectangleF(x, y, width, height);
+        this.hitBox = UberCarPicture.valueOf(car.getCarType().toString()).getHitbox();
 
         this.color = car.getCarType().getColor();
-        //this.color = new Color((int) (Math.random() * 255), (int) (Math.random() * 255), (int) (Math.random() * 255));
-        //this.rectangleF.setColor(this.color);
 
         if (car instanceof PlayerCar) {
 
@@ -74,18 +62,12 @@ public class Representation {
 
         }
 
-        //this.picture.draw();
         this.pictureF.draw();
-
-        //adjust Direction
-        if (Math.signum(this.vector.getDir().getxDir()) == -1) {
-            this.picture.grow(-width, 0);
-        }
 
     }
 
-    public Picture getPicture() {
-        return picture;
+    public PictureF getPicture() {
+        return pictureF;
     }
 
     public void setColor(Color color) {
@@ -105,10 +87,7 @@ public class Representation {
     }
 
     public void setCrashed() {
-        this.picture.setColorAt(1, 1, this.color);
-        this.color = new Color(this.color.getRed() / 2, this.color.getGreen() / 2, this.color.getBlue() / 2);
-        //this.rectangle.setColor(this.color);
-        //this.rectangle.draw();
+        //this.color = new Color(this.color.getRed() / 2, this.color.getGreen() / 2, this.color.getBlue() / 2);
     }
 
     public boolean isOnEdge() {
@@ -122,7 +101,7 @@ public class Representation {
         this.vector.move(speed, angle, shift);
         //draw representation
         this.draw();
-        //}
+
     }
 
 
@@ -135,71 +114,32 @@ public class Representation {
         float xRelative = pos.getX() - lastPos.getX();
         float yRelative = pos.getY() - lastPos.getY();
 
-        if (inRoute) {
+        if (inRoute) { //trace path
+            //TODO: should be in a container so it can be erased when the Route is finished
             adjustDirLine(pos.getX(), pos.getY());
-            //this.dirLine.translate(xRelative, yRelative);
-            //this.dirLine.draw();
             this.circleDir.fill();
-            //this.rectangle.setColor(this.color);
-            //this.rectangle.translate(xRelative, yRelative);
         }
 
-        //this.picture.translate(xRelative, yRelative);
-        //adjustToPictureDirection();
         this.pictureF.translate(xRelative, yRelative);
         double angle = Math.toRadians(this.vector.getDir().getAngle());
         this.pictureF.setAngle(angle);
 
-        //this.rectangleF.translate(xRelative, yRelative);
-        //this.rectangleF.rotate(this.vector.getDir().getAngle());
-        //this.infoText.setColor(Color.BLACK);
-        //this.infoText.translate(xRelative, yRelative);
-        //this.infoText.draw();
 
-        /*
-        try {
-            Thread.sleep(Game.delay);
-        } catch (InterruptedException ex) {
-            System.out.printf("thread interrupted exception");
-        }
-        */
 
-    }
-
-    private void adjustToPictureDirection() {
-
-        float angle = this.getVector().getDir().getAngle();
-        System.out.println(Math.abs(angle % 360));
-        if (angle > 180 && angle < 270) {
-            this.picture.grow(-width, 0);
-        }
-/*        double actualSignum = Math.signum(this.vector.getDir().getxDir());
-       double lastSignum = Math.signum(this.lastVector.getDir().getxDir());
-        if (actualSignum != lastSignum) {
-            this.picture.grow(actualSignum * width, 0);
-        }*/
     }
 
     private void adjustDirLine(float x, float y) {
         float xCenter = this.vector.getPos().getX() + (width / 2);
         float yCenter = this.vector.getPos().getY() + (height / 2);
+        this.circleDir = new Ellipse(xCenter, yCenter, 3, 3);
+        this.circleDir.setColor(this.color);
 
-        /*
+        /* radical point calculations
         // x = r × cos( θ )
         // y = r × sin( θ )
         float xDir = (width / 2) * (float) (Math.cos(this.vector.getDir().getAngleRad()));
         float yDir = (height / 2) * (float) (Math.sin(this.vector.getDir().getAngleRad()));
-
-        float xDirCenter = xCenter + xDir;
-        float yDirCenter = yCenter + yDir;
         */
-
-        //this.dirLine = new Line(xCenter, yCenter, xDirCenter, yDirCenter);
-        //this.dirLine = new Line(xCenter, yCenter, xCenter, yCenter);
-        //this.dirLine.setColor(this.color);
-
-        this.circleDir = new Ellipse(xCenter, yCenter, 3, 3);
-        this.circleDir.setColor(this.color);
 
     }
 
@@ -216,7 +156,7 @@ public class Representation {
 
         //usign pictures hitbox;
         if ((this.getPicture() != null) && (another.getPicture() != null)) {
-            //TODO: seems to work but should do more tests
+            //TODO: with rotation implemented this method doent work very well.
             int thisHitX = hitBox[0][0];
             int thisHitY = hitBox[0][1];
             int thisHitWidth = hitBox[1][0];

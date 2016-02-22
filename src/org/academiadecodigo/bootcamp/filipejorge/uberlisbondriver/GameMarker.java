@@ -36,6 +36,11 @@ public class GameMarker extends Representation {
 
     }
 
+    public void delete() {
+        marker.delete();
+        //marker = null;
+    }
+
     public boolean isReached(Car car) {
         return car.getRepresentation().collide(this) && (car.getSpeed() == 0);
     }
