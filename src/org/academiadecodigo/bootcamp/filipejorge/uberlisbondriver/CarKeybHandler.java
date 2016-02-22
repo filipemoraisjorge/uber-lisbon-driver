@@ -65,7 +65,7 @@ public class CarKeybHandler implements KeyboardHandler {
         keyEventRightRelease.setKeyboardEventType(KeyboardEventType.KEY_RELEASED);
         keyboard.addEventListener(keyEventRightRelease);
 
-      /*  keyEventLeftRelease.setKey(KeyboardEvent.KEY_UP);
+ /*       keyEventLeftRelease.setKey(KeyboardEvent.KEY_UP);
         keyEventLeftRelease.setKeyboardEventType(KeyboardEventType.KEY_RELEASED);
         keyboard.addEventListener(keyEventUpRelease);
 
@@ -108,16 +108,29 @@ public class CarKeybHandler implements KeyboardHandler {
     public void keyReleased(KeyboardEvent keyboardEvent) {
 
         switch (keyboardEvent.getKey()) {
-            case 37: { //Left
+            case KeyboardEvent.KEY_LEFT: { //Left
                 car.setSteerAngle(0);
                 //driver.steerMiddle();
                 break;
             }
-            case 39: {//Right
+            case KeyboardEvent.KEY_RIGHT: {//Right
                 car.setSteerAngle(0);
                 //driver.steerMiddle();
                 break;
             }
+
+            case KeyboardEvent.KEY_UP: { //Left
+                //car.setSpeed(0);
+                //driver.steerMiddle();
+                break;
+            }
+            case KeyboardEvent.KEY_DOWN: {//Right
+                //car.setSpeed(0);
+                //driver.steerMiddle();
+                break;
+            }
+
+
         }
 
     }

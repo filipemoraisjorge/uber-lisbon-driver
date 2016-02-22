@@ -28,7 +28,9 @@ public class Game {
      * Animation delay
      */
     public static int delay;
+
     private final int MAXLIVES = 5;
+    Picture[] livesPictures = new Picture[MAXLIVES];
     boolean loseLive = false;
     long loseLiveTime;
     boolean inGameRoute = false;
@@ -100,7 +102,6 @@ public class Game {
         init();
 
 
-
     }
 
 
@@ -110,8 +111,8 @@ public class Game {
     public void init() {
         Field.init();
 
-        //first start
-        startMarker = new GameMarker(GameMarker.MarkerType.START, 15);
+        //first start marker
+        startMarker = new GameMarker(GameMarker.MarkerType.START, 30);
 
 
         drivers = new Driver[MANUFACTURED_CARS];
@@ -136,8 +137,31 @@ public class Game {
 
         }
 
+        //show lives
+        initDrawLives();
+
+        //start game cycle
         start();
 
+    }
+
+    private void initDrawLives() {
+        for (int i = 0; i < MAXLIVES; i++) {
+
+            System.out.println("inside " + livesPictures[i] + " " + i);
+            livesPictures[i] = new Picture(65, 287, "resources/uber-lives.png");
+            livesPictures[i].translate((livesPictures[i].getWidth() * i) + (i * 5), 0);
+            livesPictures[i].draw();
+        }
+    }
+
+    private void drawLives() {
+        for (int i = 0; i < lives + 1; i++) {
+            livesPictures[i].delete();
+        }
+        for (int i = 0; i < lives; i++) {
+            livesPictures[i].draw();
+        }
     }
 
     /**
@@ -158,12 +182,8 @@ public class Game {
 
             // Move all cars
             for (int i = 0; i < drivers.length; i++) {
-
-
                 if (!drivers[i].getCar().isCrashed()) {
                     drivers[i].drive();
-
-
                 }
                 //only Player car checks collision. ie, the taxis dont collide with each other.
                 checkCollision(0);
@@ -174,9 +194,10 @@ public class Game {
             Car playerCar = drivers[0].getCar();
 
             MarkersRoutine(playerCar);
-//TODO: Show Lives
-            //TODO Show inProtected Time.
+
+
             //TODO Score, quicker = more points.
+            //TODO Show inProtected Time.
             //TODO Taxis drivers Shouts
             //TODO Start Screen with instructions
             //TODO Drivers view?
@@ -189,6 +210,7 @@ public class Game {
     private void checkLives() {
         if (loseLive && !inLoseLiveTime) {
             lives--;
+            drawLives();
             loseLiveTime = System.currentTimeMillis();
             loseLive = false;
             inLoseLiveTime = true;
@@ -198,7 +220,7 @@ public class Game {
             inLoseLiveTime = false;
         }
 
-        if (lives <= 0 && !inLoseLiveTime) {
+        if (lives <= 0 /*&& !inLoseLiveTime*/) {
             dead = true;
         }
     }
@@ -212,11 +234,11 @@ public class Game {
         //if don't exits yet, it creates
         if (!inGameRoute && startMarker == null) {
             //new start
-            startMarker = new GameMarker(GameMarker.MarkerType.START, 15);
+            startMarker = new GameMarker(GameMarker.MarkerType.START, 30);
         }
         //if do not exits yet, creates
         if (inGameRoute && endMarker == null) {
-            endMarker = new GameMarker(GameMarker.MarkerType.END, 15);
+            endMarker = new GameMarker(GameMarker.MarkerType.END, 30);
         }
 
         //if exists, test if reached
