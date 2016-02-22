@@ -2,12 +2,19 @@ package org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver;
 
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.Car;
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.PlayerCar;
+import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.graphics.ColorUber;
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.drivers.Driver;
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.drivers.PlayerDriver;
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.field.Field;
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.CarType;
+import org.academiadecodigo.simplegraphics.graphics.Rectangle;
+import org.academiadecodigo.simplegraphics.graphics.Text;
+import org.academiadecodigo.simplegraphics.keyboard.Keyboard;
+import org.academiadecodigo.simplegraphics.keyboard.KeyboardEvent;
+import org.academiadecodigo.simplegraphics.keyboard.KeyboardEventType;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardHandler;
 import org.academiadecodigo.simplegraphics.mouse.MouseHandler;
+import org.academiadecodigo.simplegraphics.pictures.Picture;
 
 
 public class Game {
@@ -21,27 +28,87 @@ public class Game {
      * Animation delay
      */
     public static int delay;
-    public final int MAXLIVES = 5;
-    public int lives = MAXLIVES;
-    Driver[] drivers;
+    private final int MAXLIVES = 5;
     boolean loseLive = false;
     long loseLiveTime;
     boolean inGameRoute = false;
+    private int lives = MAXLIVES;
+    private Driver[] drivers;
     private GameMarker startMarker;
     private GameMarker endMarker;
     private boolean dead;
-    private boolean inloseLiveTime;
+    private boolean inLoseLiveTime;
+    private boolean spacePressed = false;
+
 
     public Game(int delay) {
 
-        Field.init();
+        //  Field.init();
         Game.delay = delay;
     }
+
+    public void splashScreen() {
+
+
+        class SpaceKeybHandler implements KeyboardHandler {
+            public SpaceKeybHandler() {
+                //Keyboard
+                Keyboard keyboard = new Keyboard(this);
+                KeyboardEvent keyEventSpace = new KeyboardEvent();
+                keyEventSpace.setKey(KeyboardEvent.KEY_SPACE);
+                keyEventSpace.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+                keyboard.addEventListener(keyEventSpace);
+            }
+
+            @Override
+            public void keyPressed(KeyboardEvent keyboardEvent) {
+                switch (keyboardEvent.getKey()) {
+                    case KeyboardEvent.KEY_SPACE: {
+                        spacePressed = true;
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyboardEvent keyboardEvent) {
+
+            }
+        }
+        Rectangle background = new Rectangle(10, 10, 1398, 775);
+        Picture splash = new Picture(10, 10, "resources/uber-splash.png");
+        background.setColor(ColorUber.BLUE.getColor());
+
+
+        background.fill();
+        splash.draw();
+
+        SpaceKeybHandler space = new SpaceKeybHandler();
+
+        while (!spacePressed) {
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            //System.out.println(spacePressed);
+        }
+        space = null;
+        System.gc();
+        splash.delete();
+        //background.delete();
+        init();
+
+
+
+    }
+
 
     /**
      * Creates a bunch of cars and randomly puts them in the field
      */
-    public void init() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+    public void init() {
+        Field.init();
 
         //first start
         startMarker = new GameMarker(GameMarker.MarkerType.START, 15);
@@ -57,9 +124,19 @@ public class Game {
         for (int i = 1 + drivers.length - MANUFACTURED_CARS; i < drivers.length; i++) {
             //driver has a car
 
-            drivers[i] = new Driver(CarFactory.getNewCarbyType(CarType.TAXI));
+            try {
+                drivers[i] = new Driver(CarFactory.getNewCarbyType(CarType.TAXI));
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            }
 
         }
+
+        start();
 
     }
 
@@ -68,13 +145,16 @@ public class Game {
      *
      * @throws InterruptedException
      */
-    public void start() throws InterruptedException {
-
-        while (dead) {
+    public void start() {
+        while (!dead) {
 
 
             // Pause for a while
-            Thread.sleep(delay);
+            try {
+                Thread.sleep(delay);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
             // Move all cars
             for (int i = 0; i < drivers.length; i++) {
@@ -102,24 +182,23 @@ public class Game {
             //TODO Drivers view?
 
 
-
         }
 
     }
 
     private void checkLives() {
-        if (loseLive && !inloseLiveTime) {
+        if (loseLive && !inLoseLiveTime) {
             lives--;
             loseLiveTime = System.currentTimeMillis();
             loseLive = false;
-            inloseLiveTime = true;
+            inLoseLiveTime = true;
         }
 
-        if (inloseLiveTime && (System.currentTimeMillis() - loseLiveTime > 5000)) {
-            inloseLiveTime = false;
+        if (inLoseLiveTime && (System.currentTimeMillis() - loseLiveTime > 5000)) {
+            inLoseLiveTime = false;
         }
 
-        if (lives <= 0 && !inloseLiveTime) {
+        if (lives <= 0 && !inLoseLiveTime) {
             dead = true;
         }
     }
@@ -160,7 +239,7 @@ public class Game {
             }
 
             if (drivers[i].getCar().checkCrashed(drivers[j].getCar())) {
-                if (lives > 0 && !inloseLiveTime) {
+                if (lives > 0 && !inLoseLiveTime) {
                     loseLive = true;
                 }
 

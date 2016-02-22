@@ -38,6 +38,9 @@ public class CarKeybHandler implements KeyboardHandler {
         KeyboardEvent keyEventLeftRelease = new KeyboardEvent();
         KeyboardEvent keyEventRightRelease = new KeyboardEvent();
 
+        KeyboardEvent keyEventUpRelease = new KeyboardEvent();
+        KeyboardEvent keyEventDownRelease = new KeyboardEvent();
+
         keyEventLeft.setKey(KeyboardEvent.KEY_LEFT); //37
         keyEventLeft.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
         keyboard.addEventListener(keyEventLeft);
@@ -62,10 +65,14 @@ public class CarKeybHandler implements KeyboardHandler {
         keyEventRightRelease.setKeyboardEventType(KeyboardEventType.KEY_RELEASED);
         keyboard.addEventListener(keyEventRightRelease);
 
-        KeyboardEvent keyEventSpace = new KeyboardEvent();
-        keyEventSpace.setKey(KeyboardEvent.KEY_SPACE);
-        keyEventSpace.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-        keyboard.addEventListener(keyEventSpace);
+      /*  keyEventLeftRelease.setKey(KeyboardEvent.KEY_UP);
+        keyEventLeftRelease.setKeyboardEventType(KeyboardEventType.KEY_RELEASED);
+        keyboard.addEventListener(keyEventUpRelease);
+
+        keyEventRightRelease.setKey(KeyboardEvent.KEY_DOWN); //40
+        keyEventRightRelease.setKeyboardEventType(KeyboardEventType.KEY_RELEASED);
+        keyboard.addEventListener(keyEventDownRelease);*/
+
     }
 
     @Override
@@ -91,8 +98,6 @@ public class CarKeybHandler implements KeyboardHandler {
                 car.brake();
                 break;
             }
-
-            case KeyboardEvent.KEY_SPACE:
 
 
         }
