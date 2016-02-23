@@ -185,7 +185,6 @@ public class Game {
             MarkersRoutine(playerCar);
 
 
-            //TODO Score, quicker = more points.
             //TODO Show inProtected Time.
             //TODO Taxis drivers Shouts
             //TODO Drivers view?
@@ -248,6 +247,7 @@ public class Game {
         //If EndMarker do not exits yet, is created
         if (inGameRoute && endMarker == null) {
             endMarker = new GameMarker(GameMarker.MarkerType.END, 30);
+            //start timing for the score
             routeMaxScore = startMarker.distance(endMarker);
             routeStartTime = System.currentTimeMillis();
 
@@ -255,12 +255,10 @@ public class Game {
 
         //If EndMarker exists, test if is reached
         if (endMarker != null && endMarker.isReached(playerCar)) {
-
-            //TODO: CALC score and and to TOTALSCORE
+            //calculate score. quicker, better.
             int score = (int) Math.abs(routeMaxScore / ((routeStartTime - System.currentTimeMillis()) / 1000));
             totalScore += score;
             scoreDraw.setText("Score " + totalScore);
-            System.out.println(totalScore + " " + score + " " + routeMaxScore + " " + (routeStartTime - System.currentTimeMillis()));
 
             startMarker.delete();
             endMarker.delete();
@@ -280,8 +278,11 @@ public class Game {
             }
 
             if (drivers[i].getCar().checkCrashed(drivers[j].getCar())) {
+                System.out.println("crash!!!!!!");
                 if (lives > 0 && !inLoseLiveTime) {
                     loseLive = true;
+                    drivers[i].reversing();
+                    drivers[j].reversing();
                 }
 
                 if (lives <= 0) {

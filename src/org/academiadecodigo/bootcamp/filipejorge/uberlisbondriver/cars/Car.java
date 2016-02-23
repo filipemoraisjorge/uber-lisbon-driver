@@ -3,9 +3,6 @@ package org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars;
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.Game;
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.graphics.Representation;
 
-import java.io.FileNotFoundException;
-import java.io.PrintStream;
-
 
 abstract public class Car {
 
@@ -20,7 +17,7 @@ abstract public class Car {
     private int gearShift; //-1 reverse; 0 Neutral; 1 Forward.
     private int maxSpeed;
     private Boolean crashed = false;
-    private boolean acc;
+    private boolean accelerate;
 
     private float turnAccumulator; //speed
 
@@ -76,12 +73,12 @@ abstract public class Car {
         return maxSpeed;
     }
 
-    public boolean isAcc() {
-        return acc;
+    public boolean isAccelerate() {
+        return accelerate;
     }
 
-    public void setAcc(boolean acc) {
-        this.acc = acc;
+    public void setAccelerate(boolean accelerate) {
+        this.accelerate = accelerate;
     }
 
     public boolean isCrashed() {
@@ -98,7 +95,7 @@ abstract public class Car {
 
     private void incTurnAccumulator(int speed) {
         this.turnAccumulator += (float) speed / Game.MAXIMUM_CARS_SPEED;
-        // System.out.println(speed + " acc " + turnAccumulator);
+        // System.out.println(speed + " accelerate " + turnAccumulator);
     }
 
 
@@ -138,22 +135,22 @@ abstract public class Car {
 
 
     public void acceleratePedal() {
-        if (acc) {
-            if (speed <= this.maxSpeed) {
-                speed++;
-            }
+
+        if (speed < this.maxSpeed) {
+
+            speed++;
+
         }
     }
 
     public void deacceleratePedal() {
-        if (!acc) {
+       // if (!accelerate) {
 
             if (speed > 0) {
                 speed--;
             }
         }
-    }
-
+    //}
 
     public void brake() {
 

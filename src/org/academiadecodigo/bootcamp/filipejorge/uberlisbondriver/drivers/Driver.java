@@ -40,6 +40,14 @@ public class Driver {
         this.speedChangeRate = speedChangeRate;
     }
 
+    public boolean isReversing() {
+        return isReversing;
+    }
+
+    public void setReversing(boolean reversing) {
+        isReversing = reversing;
+    }
+
     public boolean isAccelerate() {
         return accelerate;
     }
@@ -69,7 +77,7 @@ public class Driver {
 
 
     public void accelerate() {
-        while (car.getSpeed() < car.getMaxSpeed()) {
+        if (car.getSpeed() < car.getMaxSpeed()) {
             car.acceleratePedal();
         }
         // car.move();
@@ -85,14 +93,14 @@ public class Driver {
     }
 
     public void steerLeft() {
-        while (Math.abs(car.getSteerAngle()) < car.getMAXSTEERINGANGLE()) {
+        if (Math.abs(car.getSteerAngle()) < car.getMAXSTEERINGANGLE()) {
             car.steeringWheel(SteerDirection.LEFT);
 //            car.move();
         }
     }
 
     public void steerRight() {
-        while (Math.abs(car.getSteerAngle()) < car.getMAXSTEERINGANGLE()) {
+        if (Math.abs(car.getSteerAngle()) < car.getMAXSTEERINGANGLE()) {
             car.steeringWheel(SteerDirection.RIGHT);
             //           car.move();
         }
@@ -147,7 +155,7 @@ public class Driver {
 
         float referenceAngle = car.getRepresentation().getVector().getDir().getAngle();
 
-        while ((referenceAngle - car.getRepresentation().getVector().getDir().getAngle() < degrees) && !car.checkBumper()) {
+        if ((referenceAngle - car.getRepresentation().getVector().getDir().getAngle() < degrees) && !car.checkBumper()) {
             steerLeft();
             accelerate();
         }
@@ -159,7 +167,7 @@ public class Driver {
 
         float referenceAngle = car.getRepresentation().getVector().getDir().getAngle();
 
-        while ((car.getRepresentation().getVector().getDir().getAngle() - referenceAngle < degrees) && !car.checkBumper()) {
+        if ((car.getRepresentation().getVector().getDir().getAngle() - referenceAngle < degrees) && !car.checkBumper()) {
             steerRight();
             accelerate();
         }
@@ -173,10 +181,10 @@ public class Driver {
         long startTime = System.currentTimeMillis();
 
 
-        while ((System.currentTimeMillis() - startTime < milliSeconds) && !car.checkBumper()) {
+        if ((System.currentTimeMillis() - startTime < milliSeconds) && !car.checkBumper()) {
             car.setSteerAngle(-5);
-            //steerLeft();
-            //accelerate();
+            steerLeft();
+            accelerate();
         }
         stop();
         steerMiddle();
@@ -186,7 +194,7 @@ public class Driver {
 
         long startTime = System.currentTimeMillis();
 
-        while ((System.currentTimeMillis() - startTime < milliSeconds) && !car.checkBumper()) {
+        if ((System.currentTimeMillis() - startTime < milliSeconds) && !car.checkBumper()) {
             car.setSteerAngle(5);
             //steerRight();
             //accelerate();
@@ -198,9 +206,10 @@ public class Driver {
 
     public void reversing() {
 
-        if (!isReversing && car.getRepresentation().isOnEdge()) { //init routine
+        float wallAngle = car.getRepresentation().getVector().getDir().getAngle() % 360; //HORRIVEL!
+
+        if (!isReversing /*&& car.getRepresentation().isOnEdge()*/) { //init routine
             isReversing = true;
-            float wallAngle = car.getRepresentation().getVector().getDir().getAngle() % 360; //HORRIVEL!
             //calc the angle to wall. Need it to decide which side should I steeringWheel to.
             //inverse steeringWheel to max
             car.setSteerAngle(((wallAngle % 90) <= 45 ? -car.getMAXSTEERINGANGLE() : car.getMAXSTEERINGANGLE()));
@@ -210,8 +219,10 @@ public class Driver {
         if (isReversing) { //the during routine
             car.setSpeed(car.getSpeed());
         }
-
-        if (isReversing && car.getRepresentation().getVector().isOutsideField()) { //end routine
+        System.out.println("rev "+(isReversing)+ " wall "+ wallAngle + " now " + (car.getRepresentation().getVector().getDir().getAngle()) % 360);
+        //nao conta bem o anglo q fez.
+        if ((isReversing && car.getRepresentation().getVector().isOutsideField())//hits the wall
+                || (isReversing && (Math.abs(wallAngle - car.getRepresentation().getVector().getDir().getAngle() % 360) >= 90))) { //end routine
             steerMiddle();
             changeShift();
             pressAccelerate();
@@ -241,10 +252,10 @@ public class Driver {
         if (random < speedChangeRate) {
             switch ((int) Math.random()) {
                 case 0:
-                    pressAccelerate();
+                    car.acceleratePedal();
                     break;
                 default:
-                    brakePedal();
+                    car.brake();
             }
         }
     }
@@ -257,12 +268,12 @@ public class Driver {
             switch (turnCounter % 2) {
                 case 0:
 
-                    turnRightTime(1 + ((int) Math.random() * 1));
+                    turnRight(5 + (int)( Math.random() * 175));
                     turnCounter++;
                     break;
                 case 1:
 
-                    turnLeftTime(1 + ((int) Math.random() * 1));
+                    turnLeft(5 + (int)( Math.random() * 175));
                     turnCounter++;
                     break;
             }

@@ -83,7 +83,7 @@ public class CarKeybHandler implements KeyboardHandler {
     @Override
     public void keyPressed(KeyboardEvent keyboardEvent) {
 
-
+driver.setReversing(false);
         switch (keyboardEvent.getKey()) {
             case KeyboardEvent.KEY_LEFT: { //Left
                 //car.setSteerAngle(-1);
@@ -98,13 +98,13 @@ public class CarKeybHandler implements KeyboardHandler {
                 break;
             }
             case KeyboardEvent.KEY_UP: { //Up
-                car.setAcc(true);
+                car.setAccelerate(true);
                 car.acceleratePedal();
                 System.out.println("u");
                 break;
             }
             case KeyboardEvent.KEY_DOWN: { //Down
-                car.setAcc(false);
+                car.setAccelerate(false);
                 car.deacceleratePedal();
                 System.out.println("d");
                 break;
@@ -133,12 +133,14 @@ public class CarKeybHandler implements KeyboardHandler {
                 break;
             }
 
-            case KeyboardEvent.KEY_UP: { //Left
-                car.setAcc(false);
+            case KeyboardEvent.KEY_UP: {
+                car.setAccelerate(false);
                 car.deacceleratePedal();
                 break;
             }
-            case KeyboardEvent.KEY_DOWN: {//Right
+            case KeyboardEvent.KEY_DOWN: {
+                car.setAccelerate(false);
+                car.deacceleratePedal();
                 //car.setSpeed(0);
                 //driver.steerMiddle();
                 break;
