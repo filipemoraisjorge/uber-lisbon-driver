@@ -95,8 +95,7 @@ public class Vector {
         }
     }
     */
-
-    public void move(int speed, float steerAngle, int shift) {
+    public void move(float speed, float steerAngle, int shift) {
         //save lastPos
         lastPos.setPos(this.pos);
 

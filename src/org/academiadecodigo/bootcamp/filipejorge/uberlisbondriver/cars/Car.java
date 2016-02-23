@@ -7,17 +7,19 @@ import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.graphics.
 abstract public class Car {
 
 
+    public static final float FRICTION = 0.05f;
     private static final int MAXSTEERINGANGLE = 5;
     private static final float STEERINC = 1f;
 
     private CarType carType;
     private Representation representation;
-    private int speed;
+    private float speed;
+    private float acceleration;
+    private int mass;
     private float steerAngle;
     private int gearShift; //-1 reverse; 0 Neutral; 1 Forward.
     private int maxSpeed;
     private Boolean crashed = false;
-    private boolean accelerate;
 
     private float turnAccumulator; //speed
 
@@ -26,6 +28,8 @@ abstract public class Car {
 
         this.carType = carType;
         this.speed = 0;
+        this.acceleration = 0;
+        this.mass = 1;
         this.steerAngle = 0;
         this.gearShift = 1;
         this.representation = new Representation(this);
@@ -53,12 +57,20 @@ abstract public class Car {
         this.gearShift = gearShift;
     }
 
-    public int getSpeed() {
+    public float getSpeed() {
         return speed;
     }
 
-    public void setSpeed(int speed) {
+    public void setSpeed(float speed) {
         this.speed = speed;
+    }
+
+    public float getAcceleration() {
+        return acceleration;
+    }
+
+    public void setAcceleration(float acceleration) {
+        this.acceleration = acceleration;
     }
 
     public Representation getRepresentation() {
@@ -73,13 +85,6 @@ abstract public class Car {
         return maxSpeed;
     }
 
-    public boolean isAccelerate() {
-        return accelerate;
-    }
-
-    public void setAccelerate(boolean accelerate) {
-        this.accelerate = accelerate;
-    }
 
     public boolean isCrashed() {
         return this.crashed;
@@ -89,17 +94,18 @@ abstract public class Car {
         this.crashed = crashed;
         this.representation.setCrashed();
         this.speed = 0;
+        this.acceleration = 0;
         this.steerAngle = 0;
     }
 
 
-    private void incTurnAccumulator(int speed) {
+    private void incTurnAccumulator(float speed) {
         this.turnAccumulator += (float) speed / Game.MAXIMUM_CARS_SPEED;
         // System.out.println(speed + " accelerate " + turnAccumulator);
     }
 
 
-    public boolean isTurnToMove(int speed) {
+    public boolean isTurnToMove(float speed) {
         /** more speed = move more often
          * so until the accum doesn't get to 1 the car doesn't move.
          * the fastest car moves every turn.
@@ -115,13 +121,31 @@ abstract public class Car {
     }
 
     public void move() {
+        //its like a car's engine.
 
-        if (!isCrashed() && isTurnToMove(speed) /*&& !checkBumper()*/) {
-            // if not bumping into something, then move
+        //calculate forces
+        //apply friction to car, it reduces speed.
 
+        // apply acceleration to speed.
+
+        if (speed > 0) {
+            speed -= FRICTION;
+        }
+
+        speed = speed + (mass * acceleration);
+
+        if (speed < 0) {
+            System.out.println(speed);
+            speed = 0;
+        }
+        if (speed > this.maxSpeed) {
+            speed = this.maxSpeed;
+        }
+
+
+        //Move if it is his turn.
+        if (!isCrashed() && isTurnToMove(speed)) {
             representation.move(speed, steerAngle, gearShift);
-
-
         }
 
     }
@@ -135,34 +159,21 @@ abstract public class Car {
 
 
     public void acceleratePedal() {
-
-        if (speed < this.maxSpeed) {
-
-            speed++;
-
+        if (acceleration < 5) {
+            acceleration = acceleration + 0.1f;
         }
     }
 
-    public void deacceleratePedal() {
-       // if (!accelerate) {
-
-            if (speed > 0) {
-                speed--;
-            }
-        }
-    //}
-
     public void brake() {
-
-        if (speed > 0) {
-            speed--;
+        if (acceleration > -5) {
+            acceleration = acceleration - 0.5f;
         }
     }
 
 
     public void handBrake() {
-
-        setSpeed(0);
+        //quick brake.
+        acceleration = -5;
 
     }
 

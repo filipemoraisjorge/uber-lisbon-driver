@@ -19,7 +19,7 @@ import org.academiadecodigo.simplegraphics.pictures.Picture;
 
 public class Game {
 
-    public static final int MANUFACTURED_CARS = 6;
+    public static final int MANUFACTURED_CARS = 1;
 
     public static final int MAXIMUM_CARS_SPEED = CarType.getAllMaxSpeed();
 
@@ -36,7 +36,7 @@ public class Game {
     int totalScore;
     long routeStartTime;
     int routeMaxScore;
-    Text scoreDraw;
+    private Text scoreDraw;
     private Driver[] drivers;
     private GameMarker startMarker;
     private GameMarker endMarker;
@@ -44,7 +44,11 @@ public class Game {
     private boolean inLoseLiveTime;
     private boolean dead;
     private boolean spacePressed = false;
-
+    //PlayCarInfo
+    private Text playerCarSpeed;
+    private Text playerCarAcc;
+    private Text playerCarGear;
+    private Text playerCarSteerAngle;
 
     public Game(int delay) {
 
@@ -98,8 +102,8 @@ public class Game {
             }
             //System.out.println(spacePressed);
         }
-        space = null;
-        System.gc();
+        //space = null;
+        //System.gc();
         splash.delete();
         //background.delete();
         init();
@@ -148,6 +152,17 @@ public class Game {
         scoreDraw.setColor(ColorUber.GREEN.getColor());
         scoreDraw.draw();
 
+        //init playerCarInfo
+        int infoX = 50;
+        int incX = 25;
+        playerCarSpeed = new Text(100, infoX = infoX + incX, "Speed " + drivers[0].getCar().getSpeed());
+        playerCarAcc = new Text(100, infoX = infoX + incX, "Acc " + drivers[0].getCar().getAcceleration());
+        playerCarGear = new Text(100, infoX = infoX + incX, "Gear " + drivers[0].getCar().getGearShift());
+        playerCarSteerAngle = new Text(100, infoX = infoX + incX, "Steer " + drivers[0].getCar().getSteerAngle());
+        playerCarSpeed.draw();
+        playerCarAcc.draw();
+        playerCarGear.draw();
+        playerCarSteerAngle.draw();
         //start game cycle
         start();
 
@@ -161,13 +176,13 @@ public class Game {
     public void start() {
         while (!dead) {
 
-
             // Pause for a while
             try {
                 Thread.sleep(delay);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
 
             // Move all cars
             for (int i = 0; i < drivers.length; i++) {
@@ -178,12 +193,24 @@ public class Game {
                 checkCollision(0);
             }
 
+            //update PlayerCarInfo
+            //playerCarSpeed.delete();
+            playerCarSpeed.setText("Speed " + drivers[0].getCar().getSpeed());
+            //playerCarSpeed.draw();
+            //playerCarAcc.delete();
+            playerCarAcc.setText("Acc " + drivers[0].getCar().getAcceleration());
+            //playerCarAcc.draw();
+            //playerCarGear.delete();
+            playerCarGear.setText("Gear " + drivers[0].getCar().getGearShift());
+            //playerCarGear.draw();
+            //playerCarSteerAngle.delete();
+            playerCarSteerAngle.setText("Steer " + drivers[0].getCar().getSteerAngle());
+            //playerCarSteerAngle.draw();
+
+
             checkLives();
 
-            Car playerCar = drivers[0].getCar();
-
-            MarkersRoutine(playerCar);
-
+            MarkersRoutine(drivers[0].getCar());
 
             //TODO Show inProtected Time.
             //TODO Taxis drivers Shouts

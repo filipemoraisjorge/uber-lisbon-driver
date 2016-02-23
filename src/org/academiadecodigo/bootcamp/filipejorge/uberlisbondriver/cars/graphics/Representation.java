@@ -6,7 +6,6 @@ import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.graphics.
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.field.Position;
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.field.Vector;
 import org.academiadecodigo.simplegraphics.graphics.*;
-import org.academiadecodigo.simplegraphics.pictures.Picture;
 
 /**
  * Created by filipejorge on 12/02/16.
@@ -94,7 +93,7 @@ public class Representation {
         return vector.isOnEdge();
     }
 
-    public void move(int speed, float angle, int shift) {
+    public void move(float speed, float angle, int shift) {
         //save lastVector
         this.lastVector = new Vector(this.vector);
         //move vector

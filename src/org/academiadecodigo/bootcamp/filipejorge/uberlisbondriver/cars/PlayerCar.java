@@ -21,45 +21,35 @@ public class PlayerCar extends Car {
     }
 
 
-   @Override
+/*   @Override
     public void acceleratePedal() {
 
-        if (isAccelerate() && getGearShift() == -1 && getSpeed() > 0) {
-            setSpeed(getSpeed() - 1);
+        if (getGearShift() == -1) {
+            setAcceleration(getAcceleration() - 1);
         }
-        if (isAccelerate() && getGearShift() == 1 && getSpeed() < getMaxSpeed()) {
-            setSpeed(getSpeed() + 1);
+        if (getGearShift() == 1 ) {
+            setAcceleration(getAcceleration() + 1);
         }
-        if (getSpeed() == 0) {
+        *//*if (getSpeed() == 0) {
             setGearShift(1);
-        }
+        }*//*
     }
 
-    @Override
-    public void deacceleratePedal() {
 
-        if (!isAccelerate() && getGearShift() == 1 && getSpeed() > 0) {
-            setSpeed(getSpeed() - 1);
-        }
-
-        if (!isAccelerate() && getGearShift() == -1 && getSpeed() < getMaxSpeed()) {
-            setSpeed(getSpeed() + 1);
-        }
-    }
 
     @Override
     public void brake() {
-        if (!isAccelerate() && getGearShift() == 1 && getSpeed() > 0) {
-            setSpeed(getSpeed() - 1);
+        if (getGearShift() == 1) {
+            setAcceleration(getAcceleration() - 1);
         }
 
-        if (!isAccelerate() && getGearShift() == -1 && getSpeed() < getMaxSpeed()) {
-            setSpeed(getSpeed() + 1);
+        if (getGearShift() == -1) {
+            setAcceleration(getAcceleration() + 1);
         }
-        if (getSpeed() == 0) {
+        *//*if (getSpeed() == 0) {
             setGearShift(-1);
-        }
-    }
+        }*//*
+    }*/
 
 
 }

@@ -219,7 +219,7 @@ public class Driver {
         if (isReversing) { //the during routine
             car.setSpeed(car.getSpeed());
         }
-        System.out.println("rev "+(isReversing)+ " wall "+ wallAngle + " now " + (car.getRepresentation().getVector().getDir().getAngle()) % 360);
+        // System.out.println("rev "+(isReversing)+ " wall "+ wallAngle + " now " + (car.getRepresentation().getVector().getDir().getAngle()) % 360);
         //nao conta bem o anglo q fez.
         if ((isReversing && car.getRepresentation().getVector().isOutsideField())//hits the wall
                 || (isReversing && (Math.abs(wallAngle - car.getRepresentation().getVector().getDir().getAngle() % 360) >= 90))) { //end routine
