@@ -19,7 +19,7 @@ import org.academiadecodigo.simplegraphics.pictures.Picture;
 
 public class Game {
 
-    public static final int MANUFACTURED_CARS = 1;
+    public static final int MANUFACTURED_CARS = 2;
 
     public static final int MAXIMUM_CARS_SPEED = CarType.getAllMaxSpeed();
 
@@ -189,23 +189,15 @@ public class Game {
                 if (!drivers[i].getCar().isCrashed()) {
                     drivers[i].drive();
                 }
-                //only Player car checks collision. ie, the taxis dont collide with each other.
                 checkCollision(0);
+                //only Player car checks collision. ie, the taxis dont collide with each other.
             }
 
             //update PlayerCarInfo
-            //playerCarSpeed.delete();
             playerCarSpeed.setText("Speed " + drivers[0].getCar().getSpeed());
-            //playerCarSpeed.draw();
-            //playerCarAcc.delete();
             playerCarAcc.setText("Acc " + drivers[0].getCar().getAcceleration());
-            //playerCarAcc.draw();
-            //playerCarGear.delete();
             playerCarGear.setText("Gear " + drivers[0].getCar().getGearShift());
-            //playerCarGear.draw();
-            //playerCarSteerAngle.delete();
             playerCarSteerAngle.setText("Steer " + drivers[0].getCar().getSteerAngle());
-            //playerCarSteerAngle.draw();
 
 
             checkLives();
@@ -261,21 +253,36 @@ public class Game {
     }
 
     private void MarkersRoutine(Car playerCar) {
+        //If StartMarker don't exits yet, is created
+        if (!inGameRoute && startMarker == null) {
+            startMarker = new GameMarker(GameMarker.MarkerType.START, 30);
+            //preventing markers being to close
+            if (endMarker != null) {
+                do {
+                    startMarker.delete();
+                    startMarker = new GameMarker(GameMarker.MarkerType.START, 30);
+                } while (startMarker.distance(endMarker) >= 250);
+            }
+        }
         //Reached Start Marker
         if (startMarker != null && startMarker.isReached(playerCar)) {
             playerCar.getRepresentation().setInRoute(true);
             inGameRoute = true;
 
         }
-        //If StartMarker don't exits yet, is created
-        if (!inGameRoute && startMarker == null) {
-            startMarker = new GameMarker(GameMarker.MarkerType.START, 30);
-        }
         //If EndMarker do not exits yet, is created
         if (inGameRoute && endMarker == null) {
-            endMarker = new GameMarker(GameMarker.MarkerType.END, 30);
+            int distance = 0;
+            do {
+                if (endMarker != null) {
+                    endMarker.delete();
+                }
+                endMarker = new GameMarker(GameMarker.MarkerType.END, 30);
+                distance = startMarker.distance(endMarker);
+            } while (!(distance >= 250));
+
             //start timing for the score
-            routeMaxScore = startMarker.distance(endMarker);
+            routeMaxScore = distance;
             routeStartTime = System.currentTimeMillis();
 
         }
@@ -305,7 +312,6 @@ public class Game {
             }
 
             if (drivers[i].getCar().checkCrashed(drivers[j].getCar())) {
-                System.out.println("crash!!!!!!");
                 if (lives > 0 && !inLoseLiveTime) {
                     loseLive = true;
                     drivers[i].reversing();

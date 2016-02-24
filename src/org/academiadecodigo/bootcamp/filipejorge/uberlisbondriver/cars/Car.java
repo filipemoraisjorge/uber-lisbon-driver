@@ -7,10 +7,10 @@ import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.graphics.
 abstract public class Car {
 
 
-    public static final float FRICTION = 0.05f;
-    private static final int MAXSTEERINGANGLE = 5;
+    public static final int MAXACCELERATION = 10;
+    private static final float FRICTION = 0.005f;
+    private static final int MAXSTEERINGANGLE = 3;
     private static final float STEERINC = 1f;
-
     private CarType carType;
     private Representation representation;
     private float speed;
@@ -29,7 +29,7 @@ abstract public class Car {
         this.carType = carType;
         this.speed = 0;
         this.acceleration = 0;
-        this.mass = 1;
+        this.mass = 10;
         this.steerAngle = 0;
         this.gearShift = 1;
         this.representation = new Representation(this);
@@ -100,8 +100,7 @@ abstract public class Car {
 
 
     private void incTurnAccumulator(float speed) {
-        this.turnAccumulator += (float) speed / Game.MAXIMUM_CARS_SPEED;
-        // System.out.println(speed + " accelerate " + turnAccumulator);
+        this.turnAccumulator += speed / Game.MAXIMUM_CARS_SPEED;
     }
 
 
@@ -124,18 +123,17 @@ abstract public class Car {
         //its like a car's engine.
 
         //calculate forces
+
         //apply friction to car, it reduces speed.
-
-        // apply acceleration to speed.
-
         if (speed > 0) {
             speed -= FRICTION;
         }
 
-        speed = speed + (mass * acceleration);
+        //apply acceleration to speed.
+        speed = speed + ( acceleration/mass);
 
+        //limit speed
         if (speed < 0) {
-            System.out.println(speed);
             speed = 0;
         }
         if (speed > this.maxSpeed) {
@@ -159,13 +157,13 @@ abstract public class Car {
 
 
     public void acceleratePedal() {
-        if (acceleration < 5) {
+        if (acceleration < MAXACCELERATION) {
             acceleration = acceleration + 0.1f;
         }
     }
 
     public void brake() {
-        if (acceleration > -5) {
+        if (acceleration > -MAXACCELERATION) {
             acceleration = acceleration - 0.5f;
         }
     }
@@ -173,7 +171,7 @@ abstract public class Car {
 
     public void handBrake() {
         //quick brake.
-        acceleration = -5;
+        acceleration = -25;
 
     }
 

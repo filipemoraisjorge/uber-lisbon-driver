@@ -20,12 +20,13 @@ public class Driver {
     private int turnCounter;
 
     private boolean isReversing;
+    private float reverseAngle;
     private boolean accelerate;
 
     public Driver(Car car) {
         this.car = car;
         this.speedChangeRate = 50;
-        this.directionChangeRate = 0.2f;
+        this.directionChangeRate = 0.1f;
     }
 
     public Car getCar() {
@@ -61,18 +62,11 @@ public class Driver {
     }
 
     public void pressAccelerate() {
-
-        if (isAccelerate()) {
-            car.acceleratePedal();
-        }
+        car.acceleratePedal();
     }
 
     public void brakePedal() {
-
-        if (!isAccelerate()) {
-
-            car.brake();
-        }
+        car.brake();
     }
 
 
@@ -95,14 +89,12 @@ public class Driver {
     public void steerLeft() {
         if (Math.abs(car.getSteerAngle()) < car.getMAXSTEERINGANGLE()) {
             car.steeringWheel(SteerDirection.LEFT);
-//            car.move();
         }
     }
 
     public void steerRight() {
         if (Math.abs(car.getSteerAngle()) < car.getMAXSTEERINGANGLE()) {
             car.steeringWheel(SteerDirection.RIGHT);
-            //           car.move();
         }
     }
 
@@ -110,10 +102,8 @@ public class Driver {
         while (Math.abs(car.getSteerAngle()) != 0) {
             if (car.getSteerAngle() > 0) {
                 car.steeringWheel(SteerDirection.LEFT);
-                //             car.move();
             } else {
                 car.steeringWheel(SteerDirection.RIGHT);
-                //           car.move();
             }
         }
 
@@ -208,24 +198,26 @@ public class Driver {
 
         float wallAngle = car.getRepresentation().getVector().getDir().getAngle() % 360; //HORRIVEL!
 
-        if (!isReversing /*&& car.getRepresentation().isOnEdge()*/) { //init routine
+
+        if (!isReversing) { //init routine
             isReversing = true;
             //calc the angle to wall. Need it to decide which side should I steeringWheel to.
             //inverse steeringWheel to max
-            car.setSteerAngle(((wallAngle % 90) <= 45 ? -car.getMAXSTEERINGANGLE() : car.getMAXSTEERINGANGLE()));
+            car.setSteerAngle(((wallAngle % 90) <= 45 ? -5 : 5));
             car.setGearShift(-1);    //changeShift();
+            car.setAcceleration(car.MAXACCELERATION);
         }
+        reverseAngle += car.getSteerAngle()*12;
+        //System.out.println(Math.abs(reverseAngle) > 90);
 
-        if (isReversing) { //the during routine
-            car.setSpeed(car.getSpeed());
-        }
-        // System.out.println("rev "+(isReversing)+ " wall "+ wallAngle + " now " + (car.getRepresentation().getVector().getDir().getAngle()) % 360);
-        //nao conta bem o anglo q fez.
-        if ((isReversing && car.getRepresentation().getVector().isOutsideField())//hits the wall
-                || (isReversing && (Math.abs(wallAngle - car.getRepresentation().getVector().getDir().getAngle() % 360) >= 90))) { //end routine
-            steerMiddle();
-            changeShift();
-            pressAccelerate();
+
+        //nao conta bem o angulo q fez.
+        if (isReversing  && car.getRepresentation().getVector().isOutsideField()) { //end routine
+            reverseAngle = 0;
+            car.handBrake();
+            car.setGearShift(1);
+            car.setSteerAngle(0);
+            car.setAcceleration(car.MAXACCELERATION);
             isReversing = false;
         }
     }
@@ -240,44 +232,45 @@ public class Driver {
         //moveForward();
         car.move();
 
-        decideChangeDirection();
-        decideChangeSpeed();
-
-
+        //For AI cars. Decide to change speed and direction
+        if (!isReversing) {
+            int random = (int) (Math.random() * 100);
+            if (random < directionChangeRate) {
+                decideChangeDirection();
+            }
+            if (random < speedChangeRate) {
+                decideChangeSpeed();
+            }
+        }
     }
 
 
     public void decideChangeSpeed() {
-        double random = (Math.random() * 100);
-        if (random < speedChangeRate) {
-            switch ((int) Math.random()) {
-                case 0:
-                    car.acceleratePedal();
-                    break;
-                default:
-                    car.brake();
-            }
+        switch ((int) Math.abs(Math.random())) {
+            case 0:
+                car.setAcceleration(0.1f + (float) Math.random() * 5);
+                break;
+            default:
+                car.setAcceleration(-(0.1f + (float) Math.random() * 5));
         }
     }
 
 
     public void decideChangeDirection() {
-//TODO:not working..
-        double random = (Math.random() * 100);
-        if (random < directionChangeRate) {
-            switch (turnCounter % 2) {
-                case 0:
-
-                    turnRight(5 + (int)( Math.random() * 175));
-                    turnCounter++;
-                    break;
-                case 1:
-
-                    turnLeft(5 + (int)( Math.random() * 175));
-                    turnCounter++;
-                    break;
-            }
+        switch (turnCounter % 10) {
+            case 0:
+                car.setSteerAngle(0.5f + (float) (Math.random() * car.getMAXSTEERINGANGLE()));
+                turnCounter++;
+                break;
+            case 1:
+                car.setSteerAngle(-(0.5f + (float) (Math.random() * car.getMAXSTEERINGANGLE())));
+                turnCounter++;
+                break;
+            default:
+                car.setSteerAngle(0);
+                turnCounter++;
         }
+
     }
 
 }

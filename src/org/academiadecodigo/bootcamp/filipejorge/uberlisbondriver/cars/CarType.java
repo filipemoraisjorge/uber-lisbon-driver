@@ -7,7 +7,7 @@ import org.academiadecodigo.simplegraphics.graphics.Color;
  * Created by Filipe Jorge <Academia de Código_> on 02/02/16.
  */
 public enum CarType {
-    UBERX(UberX.class, 50, ColorUber.VIVIDGREEN.getColor()),
+    UBERX(UberX.class, 10, ColorUber.VIVIDGREEN.getColor()),
     UBERBLACK(UberBlack.class, 15, ColorUber.BLACK.getColor()),
     UBERSPACE(UberSpace.class, 10, ColorUber.GREEN.getColor()),
     TAXI(Taxi.class, 10, ColorUber.DARKGREEN.getColor());

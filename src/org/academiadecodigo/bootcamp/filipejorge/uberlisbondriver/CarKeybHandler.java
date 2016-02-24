@@ -85,6 +85,10 @@ public class CarKeybHandler implements KeyboardHandler {
         keyEventShift.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
         keyboard.addEventListener(keyEventShift);
 
+        KeyboardEvent keyEventShiftRelease = new KeyboardEvent(); //Shift
+        keyEventShiftRelease.setKey(0x10);
+        keyEventShiftRelease.setKeyboardEventType(KeyboardEventType.KEY_RELEASED);
+        keyboard.addEventListener(keyEventShiftRelease);
     }
 
     @Override
@@ -96,36 +100,31 @@ public class CarKeybHandler implements KeyboardHandler {
             case KeyboardEvent.KEY_LEFT: { //Left
                 //car.setSteerAngle(-1);
                 car.steeringWheel(SteerDirection.LEFT);
-                System.out.println("l");
+               // car.setAcceleration(car.getAcceleration()/1.5f);
                 break;
             }
             case KeyboardEvent.KEY_RIGHT: {//Right
                 //car.setSteerAngle(1);
                 car.steeringWheel(SteerDirection.RIGHT);
-                System.out.println("r");
+               // car.setAcceleration(car.getAcceleration()/1.5f);
                 break;
             }
             case KeyboardEvent.KEY_UP: { //Up
                 car.acceleratePedal();
-                System.out.println("u");
                 break;
             }
             case KeyboardEvent.KEY_DOWN: { //Down
                 car.brake();
-                System.out.println("d");
                 break;
             }
             case KeyboardEvent.KEY_SPACE: { //Space
                 car.handBrake();
-                System.out.println("space");
                 break;
             }
             case 0x10: { //Shift
-                if (car.getSpeed() == 0) {
-                    car.setGearShift(-car.getGearShift());
+                if (car.getSpeed() > car.getMaxSpeed()/10) {
+                    car.setGearShift(-1);
                 }
-                System.out.println("shift");
-
                 break;
             }
         }
@@ -138,36 +137,33 @@ public class CarKeybHandler implements KeyboardHandler {
 
         switch (keyboardEvent.getKey()) {
             case KeyboardEvent.KEY_UP: {
-                System.out.println("u rel");
-                //car.brake();
                 car.setAcceleration(0);
                 break;
             }
             case KeyboardEvent.KEY_DOWN: {
-                System.out.println("d rel");
                 car.setAcceleration(0);
 
                 break;
             }
             case KeyboardEvent.KEY_LEFT: { //Left
-                System.out.println("l rel");
                 car.setSteerAngle(0);
                 //driver.steerMiddle();
                 break;
             }
             case KeyboardEvent.KEY_RIGHT: {//Right
-                System.out.println("r rel");
                 car.setSteerAngle(0);
                 //driver.steerMiddle();
                 break;
             }
-
             case KeyboardEvent.KEY_SPACE: {//Right
-                System.out.println("space rel");
                 car.setAcceleration(0);
                 break;
             }
-
+            case 0x10: { //Shift
+                    car.setAcceleration(-10f);
+                    car.setGearShift(1);
+                break;
+            }
 
         }
 
