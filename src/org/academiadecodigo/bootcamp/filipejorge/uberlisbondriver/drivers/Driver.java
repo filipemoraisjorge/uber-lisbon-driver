@@ -1,6 +1,7 @@
 package org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.drivers;
 
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.Car;
+import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.CarType;
 import org.academiadecodigo.bootcamp.filipejorge.uberlisbondriver.cars.SteerDirection;
 
 /**
@@ -201,25 +202,45 @@ public class Driver {
 
         if (!isReversing) { //init routine
             isReversing = true;
+            reverseAngle = Math.abs(car.getRepresentation().getVector().getDir().getAngle());
             //calc the angle to wall. Need it to decide which side should I steeringWheel to.
             //inverse steeringWheel to max
             car.setSteerAngle(((wallAngle % 90) <= 45 ? -5 : 5));
             car.setGearShift(-1);    //changeShift();
             car.setAcceleration(car.MAXACCELERATION);
         }
-        reverseAngle += car.getSteerAngle()*12;
-        //System.out.println(Math.abs(reverseAngle) > 90);
 
+        reverseAngle = (reverseAngle + Math.abs(car.getSteerAngle()));
+        if (car.getCarType() == CarType.UBERX) {
+            System.out.println("angle " + reverseAngle + " " + car.toString());
+        }
 
-        //nao conta bem o angulo q fez.
-        if (isReversing  && car.getRepresentation().getVector().isOutsideField()) { //end routine
+        if (isReversing && car.getRepresentation().getVector().isOutsideField() /*|| reverseAngle >= 20)*/) { //end routine
             reverseAngle = 0;
             car.handBrake();
             car.setGearShift(1);
             car.setSteerAngle(0);
             car.setAcceleration(car.MAXACCELERATION);
             isReversing = false;
+            if (car.getCarType() == CarType.UBERX) {
+                //System.out.println("------------outside----------------------");
+            }
         }
+
+        if (car.getCarType() == CarType.UBERX) {
+            System.out.println("reverse-angle " + Math.abs((Math.abs(car.getRepresentation().getVector().getDir().getAngle()) - reverseAngle)));
+            System.out.println("----------------------------------");
+        }
+        /*if (isReversing && reverseAngle-car.getRepresentation().getVector().getDir().getAngle() >= 90)) { //end routine
+            reverseAngle = 0;
+            car.handBrake();
+            car.setGearShift(1);
+            car.setSteerAngle(0);
+            car.setAcceleration(car.MAXACCELERATION);
+            isReversing = false;
+            }*/
+
+
     }
 
 

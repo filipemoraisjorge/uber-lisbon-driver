@@ -28,10 +28,10 @@ public class Game {
      * Animation delay
      */
     public static int delay;
-    private final int MAXLIVES = 5;
-    Picture[] livesPictures = new Picture[MAXLIVES];
-    boolean loseLive = false;
-    long loseLiveTime;
+    private final int MAX_LIVES = 5;
+    Picture[] livesPictures = new Picture[MAX_LIVES];
+    boolean loseLife = false;
+    long loseLifeTime;
     boolean inGameRoute = false;
     int totalScore;
     long routeStartTime;
@@ -40,8 +40,8 @@ public class Game {
     private Driver[] drivers;
     private GameMarker startMarker;
     private GameMarker endMarker;
-    private int lives = MAXLIVES;
-    private boolean inLoseLiveTime;
+    private int lives = MAX_LIVES;
+    private boolean inLoseLifeTime;
     private boolean dead;
     private boolean spacePressed = false;
     //PlayCarInfo
@@ -49,6 +49,8 @@ public class Game {
     private Text playerCarAcc;
     private Text playerCarGear;
     private Text playerCarSteerAngle;
+
+    private float startReverseAngle;
 
     public Game(int delay) {
 
@@ -190,7 +192,7 @@ public class Game {
                     drivers[i].drive();
                 }
                 checkCollision(0);
-                //only Player car checks collision. ie, the taxis dont collide with each other.
+                //only Player car checks collision. ie, the taxis don't collide with each other.
             }
 
             //update PlayerCarInfo
@@ -207,6 +209,7 @@ public class Game {
             //TODO Show inProtected Time.
             //TODO Taxis drivers Shouts
             //TODO Drivers view?
+            //TODO Map editor
 
 
         }
@@ -217,7 +220,7 @@ public class Game {
         Text livesInfo = new Text(50, 283, "Lives ");
         livesInfo.setColor(ColorUber.BLUE.getColor());
         livesInfo.draw();
-        for (int i = 0; i < MAXLIVES; i++) {
+        for (int i = 0; i < MAX_LIVES; i++) {
             livesPictures[i] = new Picture(90, 287, "resources/uber-lives.png");
             livesPictures[i].translate((livesPictures[i].getWidth() * i) + (i * 5), 0);
             livesPictures[i].draw();
@@ -235,19 +238,19 @@ public class Game {
 
 
     private void checkLives() {
-        if (loseLive && !inLoseLiveTime) {
+        if (loseLife && !inLoseLifeTime) {
             lives--;
             drawLives();
-            loseLiveTime = System.currentTimeMillis();
-            loseLive = false;
-            inLoseLiveTime = true;
+            loseLifeTime = System.currentTimeMillis();
+            loseLife = false;
+            inLoseLifeTime = true;
         }
 
-        if (inLoseLiveTime && (System.currentTimeMillis() - loseLiveTime > 5000)) {
-            inLoseLiveTime = false;
+        if (inLoseLifeTime && (System.currentTimeMillis() - loseLifeTime > 5000)) {
+            inLoseLifeTime = false;
         }
 
-        if (lives <= 0 /*&& !inLoseLiveTime*/) {
+        if (lives <= 0 /*&& !inLoseLifeTime*/) {
             dead = true;
         }
     }
@@ -256,14 +259,7 @@ public class Game {
         //If StartMarker don't exits yet, is created
         if (!inGameRoute && startMarker == null) {
             startMarker = new GameMarker(GameMarker.MarkerType.START, 30);
-            //preventing markers being to close
-            if (endMarker != null) {
-                do {
-                    startMarker.delete();
-                    startMarker = new GameMarker(GameMarker.MarkerType.START, 30);
-                } while (startMarker.distance(endMarker) >= 250);
             }
-        }
         //Reached Start Marker
         if (startMarker != null && startMarker.isReached(playerCar)) {
             playerCar.getRepresentation().setInRoute(true);
@@ -279,7 +275,8 @@ public class Game {
                 }
                 endMarker = new GameMarker(GameMarker.MarkerType.END, 30);
                 distance = startMarker.distance(endMarker);
-            } while (!(distance >= 250));
+                System.out.println("new end " + distance);
+            } while (distance <= 250);
 
             //start timing for the score
             routeMaxScore = distance;
@@ -312,15 +309,17 @@ public class Game {
             }
 
             if (drivers[i].getCar().checkCrashed(drivers[j].getCar())) {
-                if (lives > 0 && !inLoseLiveTime) {
-                    loseLive = true;
+                if (lives > 0 && !inLoseLifeTime) {
+                    loseLife = true;
+                    startReverseAngle = drivers[i].getCar().getRepresentation().getVector().getDir().getAngle();
                     drivers[i].reversing();
-                    drivers[j].reversing();
+
+                    //drivers[j].reversing();
                 }
 
                 if (lives <= 0) {
                     drivers[i].getCar().setCrashed(true);
-                    drivers[j].getCar().setCrashed(true);
+                    //drivers[j].getCar().setCrashed(true);
                 }
             }
 

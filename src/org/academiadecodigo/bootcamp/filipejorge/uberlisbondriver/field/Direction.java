@@ -91,8 +91,7 @@ public class Direction {
     }
 
     public void rotateDir(float angle) { //angle between 0° and 359°
-        this.angle = this.angle + angle;
-
+        this.angle = (this.angle + angle) % 359;
         this.angleRad = (float) Math.toRadians(this.angle);
         this.xDir = (float) Math.cos(angleRad);
         this.yDir = (float) Math.sin(angleRad);
