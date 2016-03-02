@@ -311,9 +311,9 @@ public class Game {
             if (drivers[i].getCar().checkCrashed(drivers[j].getCar())) {
                 if (lives > 0 && !inLoseLifeTime) {
                     loseLife = true;
-                    startReverseAngle = drivers[i].getCar().getRepresentation().getVector().getDir().getAngle();
+                    System.out.println("out before " + drivers[i].getCar().getRepresentation().getVector().getDir().getAngle());
                     drivers[i].reversing();
-
+                    System.out.println("out after " + drivers[i].getCar().getRepresentation().getVector().getDir().getAngle());
                     //drivers[j].reversing();
                 }
 

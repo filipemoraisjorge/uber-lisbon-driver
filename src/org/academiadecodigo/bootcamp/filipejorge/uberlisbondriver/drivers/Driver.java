@@ -197,7 +197,6 @@ public class Driver {
 
     public void reversing() {
 
-        float wallAngle = car.getRepresentation().getVector().getDir().getAngle() % 360; //HORRIVEL!
 
 
         if (!isReversing) { //init routine
@@ -205,14 +204,14 @@ public class Driver {
             reverseAngle = Math.abs(car.getRepresentation().getVector().getDir().getAngle());
             //calc the angle to wall. Need it to decide which side should I steeringWheel to.
             //inverse steeringWheel to max
-            car.setSteerAngle(((wallAngle % 90) <= 45 ? -5 : 5));
+            car.setSteerAngle(((reverseAngle % 90) <= 45 ? -car.getMAXSTEERINGANGLE() : car.getMAXSTEERINGANGLE()));
             car.setGearShift(-1);    //changeShift();
             car.setAcceleration(car.MAXACCELERATION);
         }
 
-        reverseAngle = (reverseAngle + Math.abs(car.getSteerAngle()));
+        //reverseAngle = (reverseAngle + Math.abs(car.getSteerAngle()));
         if (car.getCarType() == CarType.UBERX) {
-            System.out.println("angle " + reverseAngle + " " + car.toString());
+            System.out.println("reverseangle " + reverseAngle );
         }
 
         if (isReversing && car.getRepresentation().getVector().isOutsideField() /*|| reverseAngle >= 20)*/) { //end routine
@@ -228,17 +227,18 @@ public class Driver {
         }
 
         if (car.getCarType() == CarType.UBERX) {
-            System.out.println("reverse-angle " + Math.abs((Math.abs(car.getRepresentation().getVector().getDir().getAngle()) - reverseAngle)));
+            System.out.println("actual " + Math.abs(car.getRepresentation().getVector().getDir().getAngle()));
             System.out.println("----------------------------------");
         }
-        /*if (isReversing && reverseAngle-car.getRepresentation().getVector().getDir().getAngle() >= 90)) { //end routine
-            reverseAngle = 0;
+        if (isReversing && reverseAngle-car.getRepresentation().getVector().getDir().getAngle() >= 90) { //end routine
+            System.out.println("parou!");
+            /* reverseAngle = 0;
             car.handBrake();
             car.setGearShift(1);
             car.setSteerAngle(0);
             car.setAcceleration(car.MAXACCELERATION);
-            isReversing = false;
-            }*/
+            isReversing = false;*/
+            }
 
 
     }
